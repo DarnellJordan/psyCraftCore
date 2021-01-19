@@ -1,5 +1,7 @@
 package de.psyCraft;
 
+import de.psyCraft.core.lobby.LobbyJoinListener;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class psyCraftCore extends JavaPlugin {
@@ -8,6 +10,19 @@ public final class psyCraftCore extends JavaPlugin {
 	public void onEnable() {
 		// Plugin startup logic
 		
+	}
+	
+	private void register() {
+		registerCommands();
+		registerListeners(this.getServer().getPluginManager());
+	}
+	
+	private void registerCommands() {
+	
+	}
+	
+	private void registerListeners(PluginManager manager) {
+		manager.registerEvents(new LobbyJoinListener(), this);
 	}
 	
 	@Override

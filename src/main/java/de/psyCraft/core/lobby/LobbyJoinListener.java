@@ -29,6 +29,7 @@ public class LobbyJoinListener implements Listener {
 			return;
 		}
 		
+		player.getInventory().clear();
 		player.getInventory().setItem(0, LobbyManager.COMPASS);
 	}
 }
