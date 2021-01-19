@@ -10,6 +10,7 @@ public final class psyCraftCore extends JavaPlugin {
 	public void onEnable() {
 		// Plugin startup logic
 		
+		register();
 	}
 	
 	private void register() {
