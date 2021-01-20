@@ -1,4 +1,4 @@
-name: psyCraftAPI
+name: psyCraftCore
 version: ${project.version}
 main: de.psyCraft.psyCraftCore
 api-version: 1.16
