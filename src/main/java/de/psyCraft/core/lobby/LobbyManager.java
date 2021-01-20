@@ -24,7 +24,7 @@ public class LobbyManager {
 	
 	// Lobby Inventories
 	
-	public static final Inventory NAVIGATION = new GUIBilder(5, "§cNavigation §8§l|§7 Wähle einen Spielmodus")
+	public static final Inventory NAVIGATION = new GUIBilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus")
 			.addItemWithClickEvent(4, 1, PLACEHOLDER, (player) -> {
 				player.sendMessage("Placeholder");
 			})
