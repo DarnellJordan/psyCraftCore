@@ -14,7 +14,7 @@ public class LobbyClickListener implements Listener {
 	
 	private static Map<Integer, Runnable> clickEvents = new HashMap<>();
 	
-	public void addClickEventToSlot(int slot, Runnable action) {
+	public static void addClickEventToSlot(int slot, Runnable action) {
 		clickEvents.put(slot, action);
 	}
 	

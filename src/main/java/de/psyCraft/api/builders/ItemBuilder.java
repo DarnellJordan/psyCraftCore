@@ -1,8 +1,7 @@
-package de.psyCraft.core.items;
+package de.psyCraft.api.builders;
 
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
-import org.bukkit.enchantments.EnchantmentWrapper;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -41,7 +40,7 @@ public class ItemBuilder {
 	}
 	
 	public ItemBuilder addEnchantment(Enchantment enchantment) {
-		this.addEnchantment(enchantment, 1);
+		addEnchantment(enchantment, 1);
 		
 		return this;
 	}
