@@ -1,5 +1,6 @@
 package de.psyCraft.api.game;
 
+import de.psyCraft.core.server.Server;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -13,11 +14,11 @@ public interface GameMode {
 	
 	Material getIcon();
 	
-	void onServerInitialize();
+	void onServerInitialize(Server server);
 	
-	void onServerEnable();
+	void onServerEnable(Server server);
 	
-	void onServerDisable();
+	void onServerDisable(Server server);
 	
 	void onGameJoin(Player player);
 	

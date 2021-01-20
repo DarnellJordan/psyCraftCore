@@ -1,5 +1,6 @@
 package de.psyCraft.api.game;
 
+import de.psyCraft.core.server.Server;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -9,46 +10,48 @@ public class TestGame implements GameMode {
 	
 	@Override
 	public String getName() {
-		return null;
+		return "Test";
 	}
 	
 	@Override
 	public String getDescription() {
-		return null;
+		return "A test game";
 	}
 	
 	@Override
 	public Material getIcon() {
-		return null;
+		return Material.WOODEN_AXE;
 	}
 	
 	@Override
-	public void onServerInitialize() {
-	
+	public void onServerInitialize(Server server) {
+		server.getWorld().getHighestBlockAt(0, 0).setType(Material.GOLD_BLOCK);
 	}
 	
 	@Override
-	public void onServerEnable() {
-	
+	public void onServerEnable(Server server) {
+		server.getWorld().getHighestBlockAt(server.getServerID(), 0).setType(Material.IRON_BLOCK);
 	}
 	
 	@Override
-	public void onServerDisable() {
-	
+	public void onServerDisable(Server server) {
+		server.getWorld().getHighestBlockAt(-server.getServerID(), 0).setType(Material.LAPIS_BLOCK);
 	}
 	
 	@Override
 	public void onGameJoin(Player player) {
-	
+		player.sendMessage("Hello there");
 	}
 	
 	@Override
 	public void onGameLobbyJoin(List<Player> players) {
-	
+		for (Player player : players) {
+			player.sendMessage("Hello theres");
+		}
 	}
 	
 	@Override
 	public void onGameLeave(Player player) {
-	
+		player.sendMessage("pepeSad");
 	}
 }
