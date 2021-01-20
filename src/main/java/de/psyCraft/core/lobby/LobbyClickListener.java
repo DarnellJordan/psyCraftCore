@@ -5,16 +5,16 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
-import org.bukkit.inventory.EquipmentSlot;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.Consumer;
 
 public class LobbyClickListener implements Listener {
 	
-	private static Map<Integer, Runnable> clickEvents = new HashMap<>();
+	private static Map<Integer, Consumer<Player>> clickEvents = new HashMap<>();
 	
-	public static void addClickEventToSlot(int slot, Runnable action) {
+	public static void addClickEventToSlot(int slot, Consumer<Player> action) {
 		clickEvents.put(slot, action);
 	}
 	
@@ -23,7 +23,7 @@ public class LobbyClickListener implements Listener {
 		final int slot = event.getPlayer().getInventory().getHeldItemSlot();
 		
 		if (clickEvents.containsKey(slot)) {
-			clickEvents.get(slot).run();
+			clickEvents.get(slot).accept(event.getPlayer());
 		}
 		
 		event.setCancelled(true);
@@ -31,10 +31,14 @@ public class LobbyClickListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerInventoryClickEvent(InventoryClickEvent event) {
+		if (!(event.getWhoClicked() instanceof Player)) {
+			return;
+		}
+		
 		final int slot = event.getSlot();
 		
 		if (clickEvents.containsKey(slot)) {
-			clickEvents.get(slot).run();
+			clickEvents.get(slot).accept((Player) event.getWhoClicked());
 		}
 		
 		event.setCancelled(true);
