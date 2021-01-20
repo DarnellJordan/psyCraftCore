@@ -1,8 +1,12 @@
 package de.psyCraft.api.builders;
 
+import de.psyCraft.core.lobby.LobbyClickListener;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.function.Consumer;
 
 public class GUIBilder {
 	private final Inventory inventory;
@@ -39,7 +43,20 @@ public class GUIBilder {
 	}
 	
 	public GUIBilder addItem(final int row, final int column, final ItemStack item) {
-		addItem(row * column, item);
+		addItem(row * column - 1, item);
+		
+		return this;
+	}
+	
+	public GUIBilder addItemWIthClickEvent(final int slot, final ItemStack item, final Consumer<Player> action) {
+		LobbyClickListener.addClickEventToSlot(slot, action);
+		addItem(slot, item);
+		
+		return this;
+	}
+	
+	public GUIBilder addItemWithClickEvent(final int row, final int column, final ItemStack item, final Consumer<Player> action) {
+		addItemWIthClickEvent(row * column, item, action);
 		
 		return this;
 	}
