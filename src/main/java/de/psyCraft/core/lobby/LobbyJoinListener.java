@@ -32,8 +32,6 @@ public class LobbyJoinListener implements Listener {
 			return;
 		}
 		
-		Bukkit.broadcastMessage("join");
-		
 		player.getInventory().clear();
 		player.getInventory().setItem(0, LobbyManager.COMPASS);
 	}
