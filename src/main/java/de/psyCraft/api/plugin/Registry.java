@@ -1,7 +1,7 @@
 package de.psyCraft.api.plugin;
 
 import de.psyCraft.api.game.GameMode;
-import org.bukkit.Bukkit;
+import de.psyCraft.psyCraftCore;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,11 +13,12 @@ public class Registry {
 	public static void registerGame(GameMode gameMode) {
 		for (GameMode game : games) {
 			if (gameMode.getName().equalsIgnoreCase(game.getName())) {
-				Bukkit.getConsoleSender().sendMessage("§cGame Mode: " + gameMode.getName() + " already exists");
+				psyCraftCore.log(psyCraftCore.LogLevel.WARNING, "§cGame Mode: " + gameMode.getName() + " already exists");
 				return;
 			}
 		}
 		
 		games.add(gameMode);
+		psyCraftCore.log(psyCraftCore.LogLevel.INFO, "§aSuccessfully loaded Game Mode: " + gameMode.getName());
 	}
 }
