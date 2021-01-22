@@ -14,6 +14,12 @@ public interface GameMode {
 	
 	Material getIcon();
 	
+	boolean requireLobby();
+	
+	boolean allowReconnect();
+	
+	long getReconnectTimeout();
+	
 	void onServerInitialize(Server server);
 	
 	void onServerEnable(Server server);

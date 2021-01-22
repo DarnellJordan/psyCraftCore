@@ -13,6 +13,8 @@ public class Server {
 		this.gameMode = gameMode;
 		this.world = world;
 		this.serverID = serverID;
+		
+		
 	}
 	
 	public GameMode getGameMode() {

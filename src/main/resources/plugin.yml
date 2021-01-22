@@ -4,3 +4,7 @@ main: de.psyCraft.psyCraftCore
 api-version: 1.16
 authors: [ psyGamer ]
 description: API for all psyCraft Game Modes
+
+commands:
+  npc:
+  remove:
