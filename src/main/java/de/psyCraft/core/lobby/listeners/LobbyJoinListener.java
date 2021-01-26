@@ -16,10 +16,6 @@ public class LobbyJoinListener implements Listener {
 		}
 		
 		player.getInventory().setItem(0, LobbyManager.NAVIGATOR.getItem());
-		LobbyClickListener.addClickEventToSlot(0, (p) -> {
-			p.sendMessage("hi");
-			p.openInventory(LobbyManager.NAVIGATOR.getGUI());
-		});
 	}
 	
 	@EventHandler

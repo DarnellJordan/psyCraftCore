@@ -2,6 +2,9 @@ package de.psyCraft.core.lobby;
 
 import de.psyCraft.api.builders.GUIBilder;
 import de.psyCraft.api.builders.ItemBuilder;
+import de.psyCraft.api.game.GameMode;
+import de.psyCraft.api.plugin.registry.GameRegistry;
+import de.psyCraft.core.lobby.listeners.LobbyClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -33,17 +36,25 @@ public class LobbyManager {
 		
 		@Override
 		public Inventory getGUI() {
-			return new GUIBilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus")
-					.addItemWithClickEvent(4, 1, PLACEHOLDER, (player) -> {
-						player.sendMessage("Placeholder");
-					})
-					.build();
+			final GUIBilder builder = new GUIBilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus");
+			
+			for (GameMode game : GameRegistry.getRegisteredGames()) {
+				game.getIcon();
+
+//				builder.addItemWithCLickEvent
+			}
+			
+			return builder.build();
 		}
 	}
 	
 	private static abstract class LobbyGUI {
 		
 		private LobbyGUI() {
+			LobbyClickListener.addClickEventToSlot(getSlot(), (player) -> {
+				player.sendMessage("Servus");
+				player.openInventory(getGUI());
+			});
 		}
 		
 		abstract int getSlot();

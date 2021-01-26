@@ -1,8 +1,10 @@
 package de.psyCraft.core.lobby.listeners;
 
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
@@ -18,15 +20,30 @@ public class LobbyClickListener implements Listener {
 		clickEvents.put(slot, action);
 	}
 	
+	private static void executeClickEvent(Player player, int slot) {
+		if (clickEvents.containsKey(slot)) {
+			clickEvents.get(slot).accept(player);
+		}
+	}
+	
 	@EventHandler
 	public void onPlayerInteractionEvent(PlayerInteractEvent event) {
-		final int slot = event.getPlayer().getInventory().getHeldItemSlot();
+		final Player player = (Player) event.getPlayer();
+		final int slot = player.getInventory().getHeldItemSlot();
 		
-		if (clickEvents.containsKey(slot)) {
-			clickEvents.get(slot).accept(event.getPlayer());
+		executeClickEvent(player, slot);
+	}
+	
+	@EventHandler
+	public void onPlayerHitEntity(EntityDamageByEntityEvent event) {
+		if (!(event.getDamager() instanceof Player)) {
+			return;
 		}
 		
-		event.setCancelled(true);
+		final Player player = (Player) event.getDamager();
+		final int slot = player.getInventory().getHeldItemSlot();
+		
+		executeClickEvent(player, slot);
 	}
 	
 	@EventHandler
@@ -35,12 +52,11 @@ public class LobbyClickListener implements Listener {
 			return;
 		}
 		
-		final int slot = event.getSlot();
+		final Player player = (Player) event.getWhoClicked();
+		final int slot = player.getInventory().getHeldItemSlot();
 		
-		if (clickEvents.containsKey(slot)) {
-			clickEvents.get(slot).accept((Player) event.getWhoClicked());
-		}
+		executeClickEvent(player, slot);
 		
-		event.setCancelled(true);
+		event.setCancelled(player.getGameMode() != GameMode.CREATIVE);
 	}
 }

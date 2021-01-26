@@ -1,10 +1,11 @@
 package de.psyCraft;
 
 import de.psyCraft.api.game.TestGame;
-import de.psyCraft.api.plugin.Registry;
+import de.psyCraft.api.plugin.registry.GameRegistry;
 import de.psyCraft.core.commands.NpcCommand;
 import de.psyCraft.core.commands.RemoveCommand;
 import de.psyCraft.core.lobby.listeners.LobbyClickListener;
+import de.psyCraft.core.lobby.listeners.LobbyInteractionListener;
 import de.psyCraft.core.lobby.listeners.LobbyJoinListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -42,7 +43,7 @@ public final class psyCraftCore extends JavaPlugin {
 	public void onEnable() {
 		logger = getLogger();
 		
-		Registry.registerGame(new TestGame());
+		GameRegistry.registerGame(new TestGame());
 		
 		register();
 	}
@@ -60,6 +61,7 @@ public final class psyCraftCore extends JavaPlugin {
 	private void registerListeners(PluginManager manager) {
 		manager.registerEvents(new LobbyJoinListener(), this);
 		manager.registerEvents(new LobbyClickListener(), this);
+		manager.registerEvents(new LobbyInteractionListener(), this);
 	}
 	
 	@Override
