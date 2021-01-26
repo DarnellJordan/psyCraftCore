@@ -4,8 +4,8 @@ import de.psyCraft.api.game.TestGame;
 import de.psyCraft.api.plugin.Registry;
 import de.psyCraft.core.commands.NpcCommand;
 import de.psyCraft.core.commands.RemoveCommand;
-import de.psyCraft.core.lobby.LobbyClickListener;
-import de.psyCraft.core.lobby.LobbyJoinListener;
+import de.psyCraft.core.lobby.listeners.LobbyClickListener;
+import de.psyCraft.core.lobby.listeners.LobbyJoinListener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 

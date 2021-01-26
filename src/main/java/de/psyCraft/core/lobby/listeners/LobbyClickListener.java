@@ -1,4 +1,4 @@
-package de.psyCraft.core.lobby;
+package de.psyCraft.core.lobby.listeners;
 
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
