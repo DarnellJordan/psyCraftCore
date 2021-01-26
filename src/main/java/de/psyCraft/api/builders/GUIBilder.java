@@ -1,6 +1,6 @@
 package de.psyCraft.api.builders;
 
-import de.psyCraft.core.lobby.LobbyClickListener;
+import de.psyCraft.core.lobby.listeners.LobbyClickListener;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
