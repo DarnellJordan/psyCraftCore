@@ -11,14 +11,14 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class LobbyJoinListener implements Listener {
 	
 	private static void givePlayerItems(final Player player, final Location location) {
-		if (!location.getWorld().getName().equalsIgnoreCase(LobbyManager.LOBBY_WORLD.getName())) {
+		if (!location.getWorld().getName().equalsIgnoreCase(LobbyManager.WORLD.getName())) {
 			return;
 		}
 		
-		player.getInventory().setItem(0, LobbyManager.COMPASS);
+		player.getInventory().setItem(0, LobbyManager.NAVIGATOR.getItem());
 		LobbyClickListener.addClickEventToSlot(0, (p) -> {
 			p.sendMessage("hi");
-			p.openInventory(LobbyManager.NAVIGATION);
+			p.openInventory(LobbyManager.NAVIGATOR.getGUI());
 		});
 	}
 	

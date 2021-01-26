@@ -10,28 +10,47 @@ import org.bukkit.inventory.ItemStack;
 
 public class LobbyManager {
 	
-	// Lobby Items
-	
-	public static final ItemStack COMPASS = new ItemBuilder(Material.COMPASS)
-			.setDisplayName("§c§lNavigation §8|§7§o Rechtsklick")
-			.build();
-	
-	// Inventory Items
-	
 	public static final ItemStack PLACEHOLDER = new ItemBuilder(Material.GRASS_BLOCK)
 			.setDisplayName("Placeholder")
 			.build();
 	
-	// Lobby Inventories
+	public static final World WORLD = Bukkit.getWorld("world");
 	
-	public static final Inventory NAVIGATION = new GUIBilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus")
-			.addItemWithClickEvent(4, 1, PLACEHOLDER, (player) -> {
-				player.sendMessage("Placeholder");
-			})
-			.build();
+	public static final NavigatorGUI NAVIGATOR = new NavigatorGUI();
 	
-	// Lobby World
+	public static class NavigatorGUI extends LobbyGUI {
+		@Override
+		public int getSlot() {
+			return 0;
+		}
+		
+		@Override
+		public ItemStack getItem() {
+			return new ItemBuilder(Material.COMPASS)
+					.setDisplayName("§c§lNavigation §8|§7§o Rechtsklick")
+					.build();
+		}
+		
+		@Override
+		public Inventory getGUI() {
+			return new GUIBilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus")
+					.addItemWithClickEvent(4, 1, PLACEHOLDER, (player) -> {
+						player.sendMessage("Placeholder");
+					})
+					.build();
+		}
+	}
 	
-	public static final World LOBBY_WORLD = Bukkit.getWorld("world");
+	private static abstract class LobbyGUI {
+		
+		private LobbyGUI() {
+		}
+		
+		abstract int getSlot();
+		
+		abstract ItemStack getItem();
+		
+		abstract Inventory getGUI();
+	}
 	
 }
