@@ -1,4 +1,4 @@
-package de.psyCraft.api.plugin;
+package de.psyCraft.api.plugin.registry;
 
 import de.psyCraft.api.game.GameMode;
 import de.psyCraft.psyCraftCore;
@@ -6,7 +6,7 @@ import de.psyCraft.psyCraftCore;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Registry {
+public class GameRegistry {
 	
 	private static final List<GameMode> games = new ArrayList<>();
 	
@@ -20,5 +20,9 @@ public class Registry {
 		
 		games.add(gameMode);
 		psyCraftCore.log(psyCraftCore.LogLevel.INFO, "§aSuccessfully loaded Game Mode: " + gameMode.getName());
+	}
+	
+	public static List<GameMode> getRegisteredGames() {
+		return new ArrayList<>(games);
 	}
 }
