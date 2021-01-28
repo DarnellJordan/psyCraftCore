@@ -4,6 +4,7 @@ import de.psyCraft.api.game.TestGame;
 import de.psyCraft.api.plugin.registry.GameRegistry;
 import de.psyCraft.core.commands.NpcCommand;
 import de.psyCraft.core.commands.RemoveCommand;
+import de.psyCraft.core.commands.Skull;
 import de.psyCraft.core.lobby.listeners.LobbyClickListener;
 import de.psyCraft.core.lobby.listeners.LobbyInteractionListener;
 import de.psyCraft.core.lobby.listeners.LobbyJoinListener;
@@ -56,6 +57,7 @@ public final class psyCraftCore extends JavaPlugin {
 	private void registerCommands() {
 		getCommand("npc").setExecutor(new NpcCommand(this));
 		getCommand("remove").setExecutor(new RemoveCommand(this));
+		getCommand("head").setExecutor(new Skull());
 	}
 	
 	private void registerListeners(PluginManager manager) {

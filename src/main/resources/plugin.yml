@@ -8,3 +8,4 @@ description: API for all psyCraft Game Modes
 commands:
   npc:
   remove:
+  head:
