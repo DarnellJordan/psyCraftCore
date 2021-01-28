@@ -71,7 +71,7 @@ public class GUIBilder {
 		return this;
 	}
 	
-	public GUIBilder addItem(final int fromRow, final int fromColumn, final int toRow, final int toColumn, final ItemStack item) {
+	public GUIBilder fillItems(final int fromRow, final int fromColumn, final int toRow, final int toColumn, final ItemStack item) {
 		fillItems(fromRow * fromColumn, toRow * toColumn, item);
 		
 		return this;
