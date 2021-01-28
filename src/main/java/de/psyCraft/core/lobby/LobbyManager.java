@@ -11,6 +11,9 @@ import org.bukkit.World;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class LobbyManager {
 	
 	public static final ItemStack PLACEHOLDER = new ItemBuilder(Material.GRASS_BLOCK)
@@ -37,11 +40,22 @@ public class LobbyManager {
 		@Override
 		public Inventory getGUI() {
 			final GUIBilder builder = new GUIBilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus");
+			final List<Integer> slots = Arrays.asList(3, 5, 20, 22, 24, 39, 41);
 			
 			for (GameMode game : GameRegistry.getRegisteredGames()) {
-				game.getIcon();
-
-//				builder.addItemWithCLickEvent
+				final Material material = game.getIcon();
+				final int slot = slots.get(0);
+				
+				final ItemStack item = new ItemBuilder(material)
+						.setDisplayName(game.getName())
+						.setLore(Arrays.asList(game.getDescription().split("\\n")))
+						.build();
+				
+				builder.addItemWIthClickEvent(slot, item, (player) -> {
+					game.onGameJoin(player);
+				});
+				
+				slots.add(slots.remove(0));
 			}
 			
 			return builder.build();
