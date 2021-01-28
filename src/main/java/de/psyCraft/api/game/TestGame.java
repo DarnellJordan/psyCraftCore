@@ -4,6 +4,7 @@ import de.psyCraft.core.server.Server;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class TestGame implements GameMode {
@@ -14,8 +15,13 @@ public class TestGame implements GameMode {
 	}
 	
 	@Override
-	public String getDescription() {
-		return "A test game";
+	public List<String> getDescription() {
+		final List<String> description = new ArrayList<>();
+		
+		description.add("A test game");
+		description.add("(which is cool)");
+		
+		return description;
 	}
 	
 	@Override

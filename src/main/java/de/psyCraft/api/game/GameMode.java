@@ -10,7 +10,7 @@ public interface GameMode {
 	
 	String getName();
 	
-	String getDescription();
+	List<String> getDescription();
 	
 	Material getIcon();
 	
