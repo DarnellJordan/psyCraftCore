@@ -1,34 +1,34 @@
 package de.psyCraft.api.builders;
 
-import de.psyCraft.core.lobby.listeners.LobbyClickListener;
+import de.psyCraft.api.inventory.EventInventory;
 import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.function.Consumer;
 
 public class GUIBilder {
-	private final Inventory inventory;
+	private final EventInventory eventInventory;
 	
-	public GUIBilder(GUIType type, String title) {
+	public GUIBilder(GUIType type, String title, String id) {
 		switch (type) {
 			default:
 			case CHEST:
-				inventory = Bukkit.createInventory(null, 3 * 9, title);
+				eventInventory = new EventInventory(id, Bukkit.createInventory(null, 3 * 9, title));
 				break;
 			case DOUBLE_CHEST:
-				inventory = Bukkit.createInventory(null, 6 * 9, title);
+				eventInventory = new EventInventory(id, Bukkit.createInventory(null, 6 * 9, title));
 				break;
 		}
 	}
 	
-	public GUIBilder(int rows, String title) {
+	public GUIBilder(int rows, String title, String id) {
 		if (rows < 1 || rows > 6) {
 			throw new IllegalArgumentException("Rows cant be less then 1 or higher then 6");
 		}
 		
-		inventory = Bukkit.createInventory(null, rows * 9, title);
+		eventInventory = new EventInventory(id, Bukkit.createInventory(null, rows * 9, title));
 	}
 	
 	public enum GUIType {
@@ -37,7 +37,7 @@ public class GUIBilder {
 	}
 	
 	public GUIBilder addItem(final int slot, final ItemStack item) {
-		inventory.setItem(slot, item);
+		eventInventory.getInventory().setItem(slot, item);
 		
 		return this;
 	}
@@ -48,15 +48,15 @@ public class GUIBilder {
 		return this;
 	}
 	
-	public GUIBilder addItemWIthClickEvent(final int slot, final ItemStack item, final Consumer<Player> action) {
-		LobbyClickListener.addClickEventToSlot(slot, action);
+	public GUIBilder addItemWIthClickEvent(final int slot, final ItemStack item, final Consumer<InventoryClickEvent> event) {
+		eventInventory.addClickEvent(slot, event);
 		addItem(slot, item);
 		
 		return this;
 	}
 	
-	public GUIBilder addItemWithClickEvent(final int row, final int column, final ItemStack item, final Consumer<Player> action) {
-		addItemWIthClickEvent(row * column, item, action);
+	public GUIBilder addItemWithClickEvent(final int row, final int column, final ItemStack item, final Consumer<InventoryClickEvent> event) {
+		addItemWIthClickEvent(row * column, item, event);
 		
 		return this;
 	}
@@ -77,7 +77,11 @@ public class GUIBilder {
 		return this;
 	}
 	
-	public Inventory build() {
-		return inventory;
+	public EventInventory build() {
+		return eventInventory;
+	}
+	
+	public Inventory buildToInventory() {
+		return eventInventory.getInventory();
 	}
 }
