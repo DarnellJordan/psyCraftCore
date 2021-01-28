@@ -10,7 +10,7 @@ public class TestGame implements GameMode {
 	
 	@Override
 	public String getName() {
-		return "Test";
+		return "Test Game";
 	}
 	
 	@Override
@@ -21,6 +21,21 @@ public class TestGame implements GameMode {
 	@Override
 	public Material getIcon() {
 		return Material.WOODEN_AXE;
+	}
+	
+	@Override
+	public boolean requireLobby() {
+		return true;
+	}
+	
+	@Override
+	public boolean allowReconnect() {
+		return true;
+	}
+	
+	@Override
+	public long getReconnectTimeout() {
+		return 0;
 	}
 	
 	@Override
