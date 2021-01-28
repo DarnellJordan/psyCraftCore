@@ -1,6 +1,8 @@
 package de.psyCraft;
 
 import de.psyCraft.api.game.TestGame;
+import de.psyCraft.api.inventory.BaseInventory;
+import de.psyCraft.api.inventory.EventInventory;
 import de.psyCraft.api.plugin.registry.GameRegistry;
 import de.psyCraft.core.commands.NpcCommand;
 import de.psyCraft.core.commands.RemoveCommand;
@@ -64,6 +66,9 @@ public final class psyCraftCore extends JavaPlugin {
 		manager.registerEvents(new LobbyJoinListener(), this);
 		manager.registerEvents(new LobbyClickListener(), this);
 		manager.registerEvents(new LobbyInteractionListener(), this);
+		
+		manager.registerEvents(new BaseInventory.InventoryListener(), this);
+		manager.registerEvents(new EventInventory.ClickListener(), this);
 	}
 	
 	@Override
