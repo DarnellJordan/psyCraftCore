@@ -48,14 +48,14 @@ public class LobbyClickListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerInventoryClickEvent(InventoryClickEvent event) {
-		if (!(event.getWhoClicked() instanceof Player)) {
-			return;
-		}
-		
 		final Player player = (Player) event.getWhoClicked();
-		final int slot = player.getInventory().getHeldItemSlot();
+		final int slot = event.getSlot();
 		
-		executeClickEvent(player, slot);
+		if (event.getClickedInventory().equals(event.getWhoClicked().getInventory())) {
+			event.setCancelled(true);
+			
+			executeClickEvent(player, slot);
+		}
 		
 		event.setCancelled(player.getGameMode() != GameMode.CREATIVE);
 	}
