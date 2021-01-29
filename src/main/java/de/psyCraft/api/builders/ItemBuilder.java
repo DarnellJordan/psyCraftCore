@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -36,7 +37,7 @@ public class ItemBuilder {
 	}
 	
 	public ItemBuilder addLoreLine(String loreLine) {
-		final List<String> lore = itemMeta.getLore();
+		final List<String> lore = itemMeta.getLore() == null ? new ArrayList<>() : itemMeta.getLore();
 		lore.add(loreLine);
 		
 		itemMeta.setLore(lore);
