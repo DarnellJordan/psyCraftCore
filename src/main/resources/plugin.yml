@@ -9,3 +9,4 @@ commands:
   npc:
   remove:
   head:
+  open:
