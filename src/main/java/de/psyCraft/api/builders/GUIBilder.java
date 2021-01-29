@@ -43,28 +43,23 @@ public class GUIBilder {
 	}
 	
 	public GUIBilder addItem(final int row, final int column, final ItemStack item) {
-		addItem(row + (column - 1) * 9 - 1, item);
-		
-		return this;
+		return addItem(row + (column - 1) * 9 - 1, item);
 	}
 	
 	public GUIBilder addItemWIthClickEvent(final int slot, final ItemStack item, final Consumer<InventoryClickEvent> event) {
 		eventInventory.addClickEvent(slot, event);
-		addItem(slot, item);
 		
-		return this;
+		return addItem(slot, item);
 	}
 	
 	public GUIBilder addItemWithClickEvent(final int row, final int column, final ItemStack item, final Consumer<InventoryClickEvent> event) {
-		addItemWIthClickEvent(row + (column - 1) * 9 - 1, item, event);
-		
-		return this;
+		return addItemWIthClickEvent(row + (column - 1) * 9 - 1, item, event);
 	}
 	
 	public GUIBilder fillItems(final int fromSlot, final int toSlot, final ItemStack item) {
 		for (int x = fromSlot % 9 ; x <= toSlot % 9 ; x++) {
 			for (int y = (int) Math.floor((float) fromSlot / 9) ; y <= (int) Math.floor((float) toSlot / 9) ; y++) {
-				addItem(x, y, item);
+				addItem(x + 1, y + 1, item);
 			}
 		}
 		
@@ -72,9 +67,7 @@ public class GUIBilder {
 	}
 	
 	public GUIBilder fillItems(final int fromRow, final int fromColumn, final int toRow, final int toColumn, final ItemStack item) {
-		fillItems(fromRow + (fromColumn - 1) * 9 - 1, toRow + (toColumn - 1) * 9 - 1, item);
-		
-		return this;
+		return fillItems(fromRow + (fromColumn - 1) * 9 - 1, toRow + (toColumn - 1) * 9 - 1, item);
 	}
 	
 	public EventInventory build() {
