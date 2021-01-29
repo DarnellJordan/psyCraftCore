@@ -43,7 +43,7 @@ public class GUIBilder {
 	}
 	
 	public GUIBilder addItem(final int row, final int column, final ItemStack item) {
-		addItem(row * column - 1, item);
+		addItem(row + (column - 1) * 9 - 1, item);
 		
 		return this;
 	}
@@ -56,7 +56,7 @@ public class GUIBilder {
 	}
 	
 	public GUIBilder addItemWithClickEvent(final int row, final int column, final ItemStack item, final Consumer<InventoryClickEvent> event) {
-		addItemWIthClickEvent(row * column, item, event);
+		addItemWIthClickEvent(row + (column - 1) * 9 - 1, item, event);
 		
 		return this;
 	}
@@ -72,7 +72,7 @@ public class GUIBilder {
 	}
 	
 	public GUIBilder fillItems(final int fromRow, final int fromColumn, final int toRow, final int toColumn, final ItemStack item) {
-		fillItems(fromRow * fromColumn, toRow * toColumn, item);
+		fillItems(fromRow + (fromColumn - 1) * 9 - 1, toRow + (toColumn - 1) * 9 - 1, item);
 		
 		return this;
 	}
