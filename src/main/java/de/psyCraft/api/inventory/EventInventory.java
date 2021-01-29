@@ -1,5 +1,7 @@
 package de.psyCraft.api.inventory;
 
+import de.psyCraft.psyCraftCore;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -24,7 +26,9 @@ public class EventInventory extends BaseInventory implements Listener {
 	
 	private void executeClickEvent(InventoryClickEvent event) {
 		if (events.containsKey(event.getRawSlot())) {
-			events.get(event.getRawSlot()).accept(event);
+			Bukkit.getScheduler().runTask(psyCraftCore.INSTANCE, () -> {
+				events.get(event.getRawSlot()).accept(event);
+			});
 		}
 	}
 	
