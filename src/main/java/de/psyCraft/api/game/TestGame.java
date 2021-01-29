@@ -9,9 +9,15 @@ import java.util.List;
 
 public class TestGame implements GameMode {
 	
+	String name;
+	
+	public TestGame(int name) {
+		this.name = "" + name;
+	}
+	
 	@Override
 	public String getName() {
-		return "Test Game";
+		return name;
 	}
 	
 	@Override
