@@ -5,6 +5,7 @@ import de.psyCraft.api.inventory.BaseInventory;
 import de.psyCraft.api.inventory.EventInventory;
 import de.psyCraft.api.plugin.registry.GameRegistry;
 import de.psyCraft.core.commands.NpcCommand;
+import de.psyCraft.core.commands.OpenCommand;
 import de.psyCraft.core.commands.RemoveCommand;
 import de.psyCraft.core.commands.Skull;
 import de.psyCraft.core.lobby.listeners.LobbyClickListener;
@@ -38,15 +39,21 @@ public final class psyCraftCore extends JavaPlugin {
 	}
 	
 	@Override
-	public void onLoad() {
-		INSTANCE = this;
-	}
-	
-	@Override
 	public void onEnable() {
+		INSTANCE = this;
 		logger = getLogger();
 		
-		GameRegistry.registerGame(new TestGame());
+		// didn't want to create unique game modes
+		GameRegistry.registerGame(new TestGame(1));
+		GameRegistry.registerGame(new TestGame(2));
+		GameRegistry.registerGame(new TestGame(3));
+		GameRegistry.registerGame(new TestGame(4));
+		GameRegistry.registerGame(new TestGame(5));
+		GameRegistry.registerGame(new TestGame(6));
+		GameRegistry.registerGame(new TestGame(7));
+		GameRegistry.registerGame(new TestGame(8));
+//		GameRegistry.registerGame(new TestGame(9));
+//		GameRegistry.registerGame(new TestGame(10));
 		
 		register();
 	}
@@ -60,6 +67,7 @@ public final class psyCraftCore extends JavaPlugin {
 		getCommand("npc").setExecutor(new NpcCommand(this));
 		getCommand("remove").setExecutor(new RemoveCommand(this));
 		getCommand("head").setExecutor(new Skull());
+		getCommand("open").setExecutor(new OpenCommand());
 	}
 	
 	private void registerListeners(PluginManager manager) {
