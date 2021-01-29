@@ -3,6 +3,7 @@ package de.psyCraft.api.inventory;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryCloseEvent;
 import org.bukkit.inventory.Inventory;
 
@@ -34,9 +35,9 @@ public class BaseInventory {
 	}
 	
 	public void openInventory(Player player) {
-		openInventories.put(player, inventoryID);
-		
 		player.openInventory(inventory);
+		
+		openInventories.put(player, inventoryID);
 	}
 	
 	public String getInventoryID() {
@@ -51,6 +52,11 @@ public class BaseInventory {
 		@EventHandler
 		public void onInventoryClose(InventoryCloseEvent event) {
 			openInventories.remove(event.getPlayer());
+		}
+		
+		@EventHandler
+		public void onInventoryClick(InventoryClickEvent event) {
+			event.setCancelled(true);
 		}
 	}
 }
