@@ -51,9 +51,7 @@ public class LobbyClickListener implements Listener {
 		final Player player = (Player) event.getWhoClicked();
 		final int slot = event.getSlot();
 		
-		if (event.getClickedInventory().equals(event.getWhoClicked().getInventory())) {
-			event.setCancelled(true);
-			
+		if (event.getClickedInventory() != null && event.getClickedInventory().equals(event.getWhoClicked().getInventory())) {
 			executeClickEvent(player, slot);
 		}
 		
