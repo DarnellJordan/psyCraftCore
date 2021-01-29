@@ -1,4 +1,4 @@
-package de.psyCraft.core.lobby.listeners.items;
+package de.psyCraft.core.lobby.items;
 
 import de.psyCraft.api.builders.GUIBilder;
 import de.psyCraft.api.builders.ItemBuilder;

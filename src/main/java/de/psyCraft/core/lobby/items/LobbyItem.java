@@ -1,4 +1,4 @@
-package de.psyCraft.core.lobby.listeners.items;
+package de.psyCraft.core.lobby.items;
 
 import de.psyCraft.core.lobby.listeners.LobbyClickListener;
 import org.bukkit.entity.Player;

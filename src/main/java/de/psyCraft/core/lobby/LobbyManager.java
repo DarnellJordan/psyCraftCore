@@ -1,8 +1,8 @@
 package de.psyCraft.core.lobby;
 
 import de.psyCraft.api.builders.ItemBuilder;
-import de.psyCraft.core.lobby.listeners.items.LobbyItem;
-import de.psyCraft.core.lobby.listeners.items.NavigatorItem;
+import de.psyCraft.core.lobby.items.LobbyItem;
+import de.psyCraft.core.lobby.items.NavigatorItem;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.World;
