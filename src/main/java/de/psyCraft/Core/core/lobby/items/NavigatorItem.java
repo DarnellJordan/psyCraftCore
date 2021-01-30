@@ -2,7 +2,7 @@ package de.psyCraft.Core.core.lobby.items;
 
 import de.psyCraft.Core.api.game.GameMode;
 import de.psyCraft.Core.api.plugin.registry.GameRegistry;
-import de.psyCraft.Core.util.gui.GUIBilder;
+import de.psyCraft.Core.util.gui.ChestInventoryBuilder;
 import de.psyCraft.Core.util.inventory.EventInventory;
 import de.psyCraft.Core.util.item.ItemBuilder;
 import org.bukkit.Bukkit;
@@ -69,7 +69,7 @@ public class NavigatorItem extends LobbyItem {
 		
 		for (int i = 0 ; i < iterations ; i++) {
 			final int jIterations = Math.min(gameModes.size(), 7);
-			final GUIBilder page = new GUIBilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus", "psyCraftCore:Lobby.Navigator." + i);
+			final ChestInventoryBuilder page = new ChestInventoryBuilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus", "psyCraftCore:Lobby.Navigator." + i);
 			
 			for (int j = 0 ; j < jIterations ; j++) {
 				final GameMode gameMode = gameModes.remove(0);

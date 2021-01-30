@@ -53,8 +53,8 @@ public class LobbyClickListener implements Listener {
 		
 		if (event.getClickedInventory() != null && event.getClickedInventory().equals(event.getWhoClicked().getInventory())) {
 			executeClickEvent(player, slot);
+			event.setCancelled(player.getGameMode() != GameMode.CREATIVE);
+			player.sendMessage("cancel");
 		}
-		
-		event.setCancelled(player.getGameMode() != GameMode.CREATIVE);
 	}
 }
