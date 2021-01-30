@@ -17,11 +17,31 @@ import java.util.function.Consumer;
 public class EventInventory extends BaseInventory implements Listener {
 	
 	private final Map<Integer, Consumer<InventoryClickEvent>> events = new HashMap<>();
+	private final boolean cancelClickEvent;
 	
 	public EventInventory(String inventoryID, Inventory baseInventory) {
 		super(inventoryID, baseInventory);
 		
 		ClickListener.eventInventories.add(this);
+		
+		cancelClickEvent = true;
+	}
+	
+	public EventInventory(String inventoryID, Inventory baseInventory, boolean cancelClickEvent) {
+		super(inventoryID, baseInventory);
+		
+		ClickListener.eventInventories.add(this);
+		
+		this.cancelClickEvent = cancelClickEvent;
+	}
+	
+	public static EventInventory getWithID(String id) {
+		return ClickListener.eventInventories.stream().filter(eventInventory -> eventInventory.getInventoryID().equalsIgnoreCase(id)).findFirst().get();
+	}
+	
+	@Override
+	boolean cancelClickEvent(InventoryClickEvent event) {
+		return cancelClickEvent;
 	}
 	
 	private void executeClickEvent(InventoryClickEvent event) {

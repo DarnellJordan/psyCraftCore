@@ -1,5 +1,7 @@
 package de.psyCraft.Core.util.inventory;
 
+import org.bukkit.Bukkit;
+import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -11,10 +13,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
-public class BaseInventory {
+public abstract class BaseInventory {
 	
-	private static final Map<Player, String> openInventories = new HashMap<>();
+	protected static final Map<Player, String> openInventories = new HashMap<>();
+	private static final Map<String, Function<InventoryClickEvent, Boolean>> cancelClickEvent = new HashMap<>();
 	private static final List<String> inventoryIDs = new ArrayList<>();
 	private final String inventoryID;
 	private final Inventory inventory;
@@ -28,10 +32,16 @@ public class BaseInventory {
 		this.inventory = inventory;
 		
 		inventoryIDs.add(inventoryID);
+		
+		cancelClickEvent.put(inventoryID, this::cancelClickEvent);
 	}
 	
-	protected static Map<Player, String> getOpenInventories() {
-		return openInventories;
+	public static Map<Player, String> getOpenInventories() {
+		return new HashMap<>(openInventories);
+	}
+	
+	public static List<String> getInventoryIDs() {
+		return new ArrayList<>(inventoryIDs);
 	}
 	
 	public void openInventory(Player player) {
@@ -39,6 +49,8 @@ public class BaseInventory {
 		
 		openInventories.put(player, inventoryID);
 	}
+	
+	abstract boolean cancelClickEvent(InventoryClickEvent event);
 	
 	public String getInventoryID() {
 		return inventoryID;
@@ -56,7 +68,11 @@ public class BaseInventory {
 		
 		@EventHandler
 		public void onInventoryClick(InventoryClickEvent event) {
-			event.setCancelled(true);
+			if (openInventories.containsKey(event.getWhoClicked()) && cancelClickEvent.get(openInventories.get(event.getWhoClicked())).apply(event)) {
+				Bukkit.broadcastMessage("c");
+				
+				event.setCancelled(event.getWhoClicked().getGameMode() != GameMode.CREATIVE);
+			}
 		}
 	}
 }
