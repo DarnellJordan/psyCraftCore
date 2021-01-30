@@ -145,7 +145,6 @@ public class AnvilEventInventory extends BaseInventory {
 		
 		@EventHandler
 		public void onPlayerClickInventory(InventoryClickEvent event) {
-			System.out.println("INVENTORY: " + event.getSlot());
 			clickedSlot = event.getRawSlot();
 		}
 	}

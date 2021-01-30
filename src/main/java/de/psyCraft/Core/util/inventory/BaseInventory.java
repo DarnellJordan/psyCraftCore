@@ -1,6 +1,5 @@
 package de.psyCraft.Core.util.inventory;
 
-import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -69,7 +68,6 @@ public abstract class BaseInventory {
 		@EventHandler
 		public void onInventoryClick(InventoryClickEvent event) {
 			if (openInventories.containsKey(event.getWhoClicked()) && cancelClickEvent.get(openInventories.get(event.getWhoClicked())).apply(event)) {
-				Bukkit.broadcastMessage("c");
 				
 				event.setCancelled(event.getWhoClicked().getGameMode() != GameMode.CREATIVE);
 			}
