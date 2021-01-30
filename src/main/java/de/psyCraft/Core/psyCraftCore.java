@@ -9,6 +9,7 @@ import de.psyCraft.Core.core.commands.Skull;
 import de.psyCraft.Core.core.lobby.listeners.LobbyClickListener;
 import de.psyCraft.Core.core.lobby.listeners.LobbyInteractionListener;
 import de.psyCraft.Core.core.lobby.listeners.LobbyJoinListener;
+import de.psyCraft.Core.util.inventory.AnvilEventInventory;
 import de.psyCraft.Core.util.inventory.BaseInventory;
 import de.psyCraft.Core.util.inventory.EventInventory;
 import org.bukkit.plugin.PluginManager;
@@ -77,6 +78,7 @@ public final class psyCraftCore extends JavaPlugin {
 		
 		manager.registerEvents(new BaseInventory.InventoryListener(), this);
 		manager.registerEvents(new EventInventory.ClickListener(), this);
+		manager.registerEvents(new AnvilEventInventory.ClickListener(), this);
 	}
 	
 	@Override

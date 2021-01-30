@@ -1,6 +1,10 @@
 package de.psyCraft.Core.api.game;
 
 import de.psyCraft.Core.core.server.Server;
+import de.psyCraft.Core.util.gui.AnvilInventoryBuilder;
+import de.psyCraft.Core.util.inventory.AnvilEventInventory;
+import de.psyCraft.Core.util.inventory.BaseInventory;
+import de.psyCraft.Core.util.item.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -68,6 +72,36 @@ public class TestGame implements GameMode {
 	@Override
 	public void onGameJoin(Player player) {
 		player.sendMessage("Hello there");
+//		player.getLocation().getBlock().setType(Material.ANVIL);
+//		Inventory inventory = player.openAnvil(player.getLocation(), true).getTopInventory();
+//
+////		inventory.setItem(0, new ItemBuilder(Material.PAPER)
+////				.setDisplayName(" ")
+////				.build());
+//		inventory.setItem(2, new ItemBuilder(Material.BOOK)
+//				.addEnchantmentGlint()
+//				.build());
+		
+		final AnvilEventInventory inventory;
+		
+		if (!BaseInventory.getInventoryIDs().contains("psyCraftCore.TextInput")) {
+			inventory = new AnvilEventInventory("psyCraftCore.TextInput", new AnvilInventoryBuilder()
+					.setFirstItemWithClickEvent(new ItemBuilder(Material.PAPER)
+							.setDisplayName(" ")
+							.build(), event -> event.getInventory().getRenameText())
+					.setResultWithClickEvent(new ItemBuilder(Material.BOOK)
+							.setDisplayName("§eName: §6§l")
+							.addEnchantmentGlint()
+							.build(), event -> {
+						player.sendMessage("you entered: " + event.getInventory().getRenameText());
+						player.closeInventory();
+					})
+					.setLevelRequirement(1));
+		} else {
+			inventory = AnvilEventInventory.getWithID("psyCraftCore.TextInput");
+		}
+		
+		inventory.openInventory(player);
 	}
 	
 	@Override

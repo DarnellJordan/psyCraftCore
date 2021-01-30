@@ -24,6 +24,11 @@ public class ItemBuilder {
 		itemMeta = itemStack.getItemMeta();
 	}
 	
+	public ItemBuilder(ItemStack item) {
+		itemStack = item.clone();
+		itemMeta = itemStack.getItemMeta();
+	}
+	
 	public ItemBuilder setDisplayName(String displayName) {
 		itemMeta.setDisplayName(displayName);
 		
