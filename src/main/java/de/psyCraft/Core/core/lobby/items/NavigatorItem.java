@@ -57,11 +57,11 @@ public class NavigatorItem extends LobbyItem {
 				.build();
 		final ItemStack leftArrow = new ItemBuilder(Material.PLAYER_HEAD)
 				.setDisplayName("§7« §oVorherige Seite")
-				.setHeadURL("http://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e")
+				.setHeadURL("http://textures.minecraft.net/texture/37aee9a75bf0df7897183015cca0b2a7d755c63388ff01752d5f4419fc645")
 				.build();
 		final ItemStack rightArrow = new ItemBuilder(Material.PLAYER_HEAD)
 				.setDisplayName("§7» §oNächste Seite")
-				.setHeadURL("http://textures.minecraft.net/texture/37aee9a75bf0df7897183015cca0b2a7d755c63388ff01752d5f4419fc645")
+				.setHeadURL("http://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e")
 				.build();
 		
 		final List<GameMode> gameModes = new ArrayList<>(GameRegistry.getRegisteredGames());
@@ -94,12 +94,12 @@ public class NavigatorItem extends LobbyItem {
 			final int currentPageIteration = i;
 			
 			if (i > 0) {
-				page.addItemWithClickEvent(1, 3, rightArrow, (event) -> {
+				page.addItemWithClickEvent(1, 3, leftArrow, (event) -> {
 					pages.get(currentPageIteration - 1).openInventory((Player) event.getWhoClicked());
 				});
 			}
 			if (iterations > i + 1) {
-				page.addItemWithClickEvent(9, 3, leftArrow, (event) -> {
+				page.addItemWithClickEvent(9, 3, rightArrow, (event) -> {
 					pages.get(currentPageIteration + 1).openInventory((Player) event.getWhoClicked());
 				});
 			}
