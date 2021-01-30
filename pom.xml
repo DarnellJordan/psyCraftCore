@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>de.psyCraft</groupId>
-    <artifactId>psyCraftAPI</artifactId>
+    <artifactId>Core</artifactId>
     <version>1.0.0</version>
     <packaging>jar</packaging>
 
-    <name>psyCraftAPI</name>
+    <name>psyCraftCore</name>
 
-    <description>API for all psyCraft Game Modes</description>
+    <description>The Core for all psyCraft Plugins</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
