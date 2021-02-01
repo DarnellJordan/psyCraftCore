@@ -24,7 +24,8 @@ import java.util.function.Consumer;
 public class AnvilEventInventory extends BaseInventory {
 	
 	private final Map<Player, InventoryView> inventoryViews = new HashMap<>();
-	private final Map<Integer, Consumer<PrepareAnvilEvent>> events = new HashMap<>();
+	private final Map<Integer, Consumer<InventoryClickEvent>> clickEvents = new HashMap<>();
+	private final Map<Integer, Consumer<PrepareAnvilEvent>> prepareAnvilEvents = new HashMap<>();
 	
 	private final Inventory anvilInventory;
 	
@@ -72,19 +73,34 @@ public class AnvilEventInventory extends BaseInventory {
 		return ClickListener.eventInventories.stream().filter(eventInventory -> eventInventory.getInventoryID().equalsIgnoreCase(id)).findFirst().get();
 	}
 	
-	private void executeClickEvent(Pair<PrepareAnvilEvent, Integer> clickEvent) {
-		final PrepareAnvilEvent event = clickEvent.first;
+	public void addPrepareAnvilEvent(final int slot, final Consumer<PrepareAnvilEvent> prepareAnvilEvent) {
+		prepareAnvilEvents.put(slot, prepareAnvilEvent);
+	}
+	
+	private void executeClickEvent(Pair<InventoryClickEvent, Integer> clickEvent) {
+		final InventoryClickEvent event = clickEvent.first;
 		final int slot = clickEvent.second;
 		
-		if (events.containsKey(slot)) {
+		if (clickEvents.containsKey(slot)) {
 			Bukkit.getScheduler().runTask(psyCraftCore.INSTANCE, () -> {
-				events.get(slot).accept(event);
+				clickEvents.get(slot).accept(event);
 			});
 		}
 	}
 	
-	public void addClickEvent(final int slot, final Consumer<PrepareAnvilEvent> event) {
-		events.put(slot, event);
+	private void executePrepareAnvilEvent(Pair<PrepareAnvilEvent, Integer> prepareAnvilEvent) {
+		final PrepareAnvilEvent event = prepareAnvilEvent.first;
+		final int slot = prepareAnvilEvent.second;
+		
+		if (clickEvents.containsKey(slot)) {
+			Bukkit.getScheduler().runTask(psyCraftCore.INSTANCE, () -> {
+				prepareAnvilEvents.get(slot).accept(event);
+			});
+		}
+	}
+	
+	public void addClickEvent(final int slot, final Consumer<InventoryClickEvent> clickEvent) {
+		clickEvents.put(slot, clickEvent);
 	}
 	
 	@Override
@@ -116,7 +132,7 @@ public class AnvilEventInventory extends BaseInventory {
 		private int clickedSlot = 0;
 		
 		@EventHandler
-		public void onPlayerClickAnvil(PrepareAnvilEvent event) {
+		public void onPlayerPrepareAnvil(PrepareAnvilEvent event) {
 			final Player player = (Player) event.getView().getPlayer();
 			
 			if (!getOpenInventories().containsKey(player) ||
@@ -135,7 +151,7 @@ public class AnvilEventInventory extends BaseInventory {
 					event.getInventory().setRepairCost(eventInventory.requiredLevels);
 					
 					if (clickedSlot >= 0) {
-						eventInventory.executeClickEvent(Pair.of(event, clickedSlot));
+						eventInventory.executePrepareAnvilEvent(Pair.of(event, clickedSlot));
 					}
 				}
 			}
@@ -146,6 +162,10 @@ public class AnvilEventInventory extends BaseInventory {
 		@EventHandler
 		public void onPlayerClickInventory(InventoryClickEvent event) {
 			clickedSlot = event.getRawSlot();
+			
+			for (AnvilEventInventory eventInventory : eventInventories) {
+				eventInventory.executeClickEvent(Pair.of(event, clickedSlot));
+			}
 		}
 	}
 }

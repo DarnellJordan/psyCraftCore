@@ -5,6 +5,7 @@ import de.psyCraft.Core.util.gui.AnvilInventoryBuilder;
 import de.psyCraft.Core.util.inventory.AnvilEventInventory;
 import de.psyCraft.Core.util.inventory.BaseInventory;
 import de.psyCraft.Core.util.item.ItemBuilder;
+import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
@@ -86,15 +87,18 @@ public class TestGame implements GameMode {
 		
 		if (!BaseInventory.getInventoryIDs().contains("psyCraftCore.TextInput")) {
 			inventory = new AnvilEventInventory("psyCraftCore.TextInput", new AnvilInventoryBuilder()
-					.setFirstItemWithClickEvent(new ItemBuilder(Material.PAPER)
+					.setFirstItem(new ItemBuilder(Material.PAPER)
 							.setDisplayName(" ")
-							.build(), event -> event.getInventory().getRenameText())
-					.setResultWithClickEvent(new ItemBuilder(Material.BOOK)
+							.build())
+					.setResult(new ItemBuilder(Material.BOOK)
 							.setDisplayName("§eName: §6§l")
 							.addEnchantmentGlint()
-							.build(), event -> {
-						player.sendMessage("you entered: " + event.getInventory().getRenameText());
-						player.closeInventory();
+							.build())
+					.setResultClickEvent(event -> {
+						((Player) event.getWhoClicked()).setLevel(1);
+					})
+					.setResultPrepareEvent(event -> {
+						Bukkit.broadcastMessage(event.getInventory().getRenameText());
 					})
 					.setLevelRequirement(1));
 		} else {
