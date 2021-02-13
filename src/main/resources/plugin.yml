@@ -1,9 +1,12 @@
 name: psyCraftCore
 version: ${project.version}
-main: de.psyCraft.Core.psyCraftCore
+main: de.psyCraft.Core.PsyCraftCore
 api-version: 1.16
 authors: [ psyGamer ]
 description: API for all psyCraft Game Modes
+
+depend:
+  - Multiverse-Core
 
 commands:
   npc:

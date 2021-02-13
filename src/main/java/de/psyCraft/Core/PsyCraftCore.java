@@ -15,7 +15,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.logging.Logger;
 
-public final class psyCraftCore extends JavaPlugin {
+public final class PsyCraftCore extends JavaPlugin {
 	
 	private static PsyCraftCore instance;
 	private static MultiverseCore multiverseCore;

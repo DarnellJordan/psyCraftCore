@@ -1,7 +1,7 @@
 package de.psyCraft.Core.core.commands;
 
 import com.mojang.authlib.GameProfile;
-import de.psyCraft.Core.psyCraftCore;
+import de.psyCraft.Core.PsyCraftCore;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
@@ -17,9 +17,9 @@ import java.util.UUID;
 
 public class NpcCommand implements CommandExecutor {
 	
-	private final psyCraftCore plugin;
+	private final PsyCraftCore plugin;
 	
-	public NpcCommand(psyCraftCore plugin) {
+	public NpcCommand(PsyCraftCore plugin) {
 		this.plugin = plugin;
 	}
 	

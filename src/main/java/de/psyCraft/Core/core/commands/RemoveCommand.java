@@ -1,6 +1,6 @@
 package de.psyCraft.Core.core.commands;
 
-import de.psyCraft.Core.psyCraftCore;
+import de.psyCraft.Core.PsyCraftCore;
 import net.minecraft.server.v1_16_R3.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
@@ -12,9 +12,9 @@ import org.bukkit.craftbukkit.v1_16_R3.entity.CraftPlayer;
 
 public class RemoveCommand implements CommandExecutor {
 	
-	private final psyCraftCore plugin;
+	private final PsyCraftCore plugin;
 	
-	public RemoveCommand(psyCraftCore plugin) {
+	public RemoveCommand(PsyCraftCore plugin) {
 		this.plugin = plugin;
 	}
 	
