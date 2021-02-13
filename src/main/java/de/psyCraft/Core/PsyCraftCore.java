@@ -1,5 +1,6 @@
 package de.psyCraft.Core;
 
+import com.onarandombox.MultiverseCore.MultiverseCore;
 import de.psyCraft.Core.api.game.TestGame;
 import de.psyCraft.Core.api.plugin.registry.GameRegistry;
 import de.psyCraft.Core.core.commands.NpcCommand;
@@ -19,7 +20,8 @@ import java.util.logging.Logger;
 
 public final class psyCraftCore extends JavaPlugin {
 	
-	public static psyCraftCore INSTANCE;
+	private static PsyCraftCore instance;
+	private static MultiverseCore multiverseCore;
 	
 	private static Logger logger;
 	
@@ -28,20 +30,20 @@ public final class psyCraftCore extends JavaPlugin {
 		WARNING
 	}
 	
-	public static void log(LogLevel level, Object message) {
-		switch (level) {
-			case INFO:
-				logger.info(message.toString());
-				break;
-			case WARNING:
-				logger.warning(message.toString());
-				break;
-		}
+	public static MultiverseCore getMultiverseCore() {
+		return multiverseCore;
+	}
+	
+	public static Logger logger() {
+		return logger;
 	}
 	
 	@Override
 	public void onEnable() {
-		INSTANCE = this;
+		instance = this;
+		
+		multiverseCore = (MultiverseCore) getServer().getPluginManager().getPlugin("Multiverse-Core");
+		
 		logger = getLogger();
 		
 		// didn't want to create unique game modes
