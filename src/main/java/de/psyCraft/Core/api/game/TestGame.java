@@ -1,13 +1,10 @@
 package de.psyCraft.Core.api.game;
 
 import de.psyCraft.Core.core.server.Server;
-import de.psyCraft.Core.util.gui.AnvilInventoryBuilder;
-import de.psyCraft.Core.util.inventory.AnvilEventInventory;
-import de.psyCraft.Core.util.inventory.BaseInventory;
-import de.psyCraft.Core.util.item.ItemBuilder;
-import org.bukkit.Bukkit;
+import de.psyCraft.Core.core.server.events.ServerWorldCreationEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +19,11 @@ public class TestGame implements GameMode {
 	
 	@Override
 	public String getName() {
+		return "game_" + name;
+	}
+	
+	@Override
+	public String getDisplayName() {
 		return name;
 	}
 	
@@ -36,42 +38,51 @@ public class TestGame implements GameMode {
 	}
 	
 	@Override
-	public Material getIcon() {
-		return Material.WOODEN_AXE;
+	public ItemStack getItem() {
+		return new ItemStack(Material.WOODEN_AXE);
 	}
 	
 	@Override
-	public boolean requireLobby() {
-		return true;
+	public AccessLevel getAccessLevel(Player player) {
+		return null;
 	}
 	
 	@Override
-	public boolean allowReconnect() {
-		return true;
-	}
-	
-	@Override
-	public long getReconnectTimeout() {
-		return 0;
+	public void onServerWorldCreation(ServerWorldCreationEvent event) {
+		event.setSeed(69420);
 	}
 	
 	@Override
 	public void onServerInitialize(Server server) {
-		server.getWorld().getHighestBlockAt(0, 0).setType(Material.GOLD_BLOCK);
+		System.out.println("enable");
+		System.out.println(server.getWorlds());
+		System.out.println(server.getWorlds().get("main"));
+		System.out.println(server.getWorlds().get("main").getCBWorld());
+		System.out.println(server.getWorlds().get("main").getCBWorld().getHighestBlockAt(0, 0));
+		
+		server.getWorlds().get("main").getCBWorld().getHighestBlockAt(0, 0).setType(Material.GOLD_BLOCK);
 	}
 	
 	@Override
 	public void onServerEnable(Server server) {
-		server.getWorld().getHighestBlockAt(server.getServerID(), 0).setType(Material.IRON_BLOCK);
+		
+		System.out.println(server.getWorlds());
+		
+		server
+				.getWorlds()
+				.get("main")
+				.getCBWorld()
+				.getHighestBlockAt(server.getServerID(), 0)
+				.setType(Material.IRON_BLOCK);
 	}
 	
 	@Override
 	public void onServerDisable(Server server) {
-		server.getWorld().getHighestBlockAt(-server.getServerID(), 0).setType(Material.LAPIS_BLOCK);
+		server.getWorlds().get("main").getCBWorld().getHighestBlockAt(-server.getServerID(), 0).setType(Material.LAPIS_BLOCK);
 	}
 	
 	@Override
-	public void onGameJoin(Player player) {
+	public void onGameJoin(Server server, Player player) {
 		player.sendMessage("Hello there");
 //		player.getLocation().getBlock().setType(Material.ANVIL);
 //		Inventory inventory = player.openAnvil(player.getLocation(), true).getTopInventory();
@@ -83,40 +94,48 @@ public class TestGame implements GameMode {
 //				.addEnchantmentGlint()
 //				.build());
 		
-		final AnvilEventInventory inventory;
+		/*final AnvilEventInventory inventory;
 		
 		if (!BaseInventory.getInventoryIDs().contains("psyCraftCore.TextInput")) {
 			inventory = new AnvilEventInventory("psyCraftCore.TextInput", new AnvilInventoryBuilder()
-					.setFirstItem(new ItemBuilder(Material.PAPER)
-							.setDisplayName(" ")
-							.build())
-					.setResult(new ItemBuilder(Material.BOOK)
-							.setDisplayName("§eName: §6§l")
-							.addEnchantmentGlint()
-							.build())
-					.setResultClickEvent(event -> {
-						((Player) event.getWhoClicked()).setLevel(1);
+					.setItem(AnvilInventoryBuilder.FIRST_SLOT,
+							new ItemBuilder(Material.PAPER).setDisplayName(" ").build())
+					.setItem(AnvilInventoryBuilder.RESULT_SLOT,
+							new ItemBuilder(Material.BOOK).setDisplayName("§eName: §6§l").addEnchantmentGlint().build())
+					.setItemAnvilClickEvent(AnvilInventoryBuilder.RESULT_SLOT, event -> {
+						Bukkit.broadcastMessage(String.valueOf(event.getInventoryClickEvent().getRawSlot()));
+						Bukkit.broadcastMessage(event.getPrepareAnvilEvent().getInventory().getRenameText());
 					})
-					.setResultPrepareEvent(event -> {
-						Bukkit.broadcastMessage(event.getInventory().getRenameText());
-					})
+//					.setResult(new ItemBuilder(Material.BOOK)
+//							.setDisplayName("§eName: §6§l")
+//							.addEnchantmentGlint()
+//							.build())
+//					.setResultClickEvent(event -> {
+//						((Player) event.getWhoClicked()).setLevel(1);
+//					})
+//					.setResultPrepareEvent(event -> {
+//						Bukkit.broadcastMessage(event.getInventory().getRenameText());
+//					})
 					.setLevelRequirement(1));
 		} else {
 			inventory = AnvilEventInventory.getWithID("psyCraftCore.TextInput");
 		}
 		
-		inventory.openInventory(player);
+		inventory.openInventory(player);*/
+		System.out.println(server);
+		System.out.println(server.getWorlds());
+		player.teleport(server.getWorlds().get("main").getSpawnLocation());
 	}
 	
 	@Override
-	public void onGameLobbyJoin(List<Player> players) {
+	public void onGameLobbyJoin(Server server, List<Player> players) {
 		for (Player player : players) {
 			player.sendMessage("Hello theres");
 		}
 	}
 	
 	@Override
-	public void onGameLeave(Player player) {
+	public void onGameLeave(Server server, Player player) {
 		player.sendMessage("pepeSad");
 	}
 }

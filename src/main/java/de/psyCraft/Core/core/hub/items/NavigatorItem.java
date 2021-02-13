@@ -2,6 +2,7 @@ package de.psyCraft.Core.core.hub.items;
 
 import de.psyCraft.Core.api.game.GameMode;
 import de.psyCraft.Core.api.registry.GameRegistry;
+import de.psyCraft.Core.core.server.ServerManager;
 import de.psyCraft.Core.util.gui.ChestInventoryBuilder;
 import de.psyCraft.Core.util.inventory.EventInventory;
 import de.psyCraft.Core.util.item.ItemBuilder;
@@ -81,7 +82,7 @@ public class NavigatorItem extends HubItem {
 				final int slot = slotMap.get(jIterations).get(j);
 				
 				page.addItemWIthClickEvent(slot, gameItem, (event) -> {
-					gameMode.onGameJoin((Player) event.getWhoClicked());
+					gameMode.onGameJoin(ServerManager.getServerByID(gameMode), (Player) event.getWhoClicked());
 				});
 			}
 			
