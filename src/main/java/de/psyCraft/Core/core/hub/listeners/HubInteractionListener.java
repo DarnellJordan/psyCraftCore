@@ -1,4 +1,4 @@
-package de.psyCraft.Core.core.lobby.listeners;
+package de.psyCraft.Core.core.hub.listeners;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -10,7 +10,7 @@ import org.bukkit.event.entity.EntityPickupItemEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 
-public class LobbyInteractionListener implements Listener {
+public class HubInteractionListener implements Listener {
 	
 	@EventHandler
 	public void onPlayerInteractionEvent(PlayerInteractEvent event) {

@@ -1,6 +1,6 @@
-package de.psyCraft.Core.core.lobby.listeners;
+package de.psyCraft.Core.core.hub.listeners;
 
-import de.psyCraft.Core.core.lobby.LobbyManager;
+import de.psyCraft.Core.core.hub.HubManager;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -8,14 +8,14 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerTeleportEvent;
 
-public class LobbyJoinListener implements Listener {
+public class HubJoinListener implements Listener {
 	
 	private static void givePlayerItems(final Player player, final Location location) {
-		if (!location.getWorld().getName().equalsIgnoreCase(LobbyManager.WORLD.getName())) {
+		if (!location.getWorld().getName().equalsIgnoreCase(HubManager.WORLD.getName())) {
 			return;
 		}
 		
-		player.getInventory().setItem(0, LobbyManager.NAVIGATOR.getItem());
+		player.getInventory().setItem(0, HubManager.NAVIGATOR.getItem());
 	}
 	
 	@EventHandler

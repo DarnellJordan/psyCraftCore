@@ -1,13 +1,13 @@
-package de.psyCraft.Core.core.lobby.items;
+package de.psyCraft.Core.core.hub.items;
 
-import de.psyCraft.Core.core.lobby.listeners.LobbyClickListener;
+import de.psyCraft.Core.core.hub.listeners.HubClickListener;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
-public abstract class LobbyItem {
+public abstract class HubItem {
 	
-	LobbyItem() {
-		LobbyClickListener.addClickEventToSlot(getHotbarSlot(), (player) -> {
+	HubItem() {
+		HubClickListener.addClickEventToSlot(getHotbarSlot(), (player) -> {
 			onInteract(player);
 		});
 	}

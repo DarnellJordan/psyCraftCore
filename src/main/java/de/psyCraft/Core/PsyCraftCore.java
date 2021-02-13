@@ -2,14 +2,11 @@ package de.psyCraft.Core;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
 import de.psyCraft.Core.api.game.TestGame;
-import de.psyCraft.Core.api.plugin.registry.GameRegistry;
-import de.psyCraft.Core.core.commands.NpcCommand;
-import de.psyCraft.Core.core.commands.OpenCommand;
-import de.psyCraft.Core.core.commands.RemoveCommand;
-import de.psyCraft.Core.core.commands.Skull;
-import de.psyCraft.Core.core.lobby.listeners.LobbyClickListener;
-import de.psyCraft.Core.core.lobby.listeners.LobbyInteractionListener;
-import de.psyCraft.Core.core.lobby.listeners.LobbyJoinListener;
+import de.psyCraft.Core.api.registry.GameRegistry;
+import de.psyCraft.Core.core.commands.*;
+import de.psyCraft.Core.core.hub.listeners.HubClickListener;
+import de.psyCraft.Core.core.hub.listeners.HubInteractionListener;
+import de.psyCraft.Core.core.hub.listeners.HubJoinListener;
 import de.psyCraft.Core.util.inventory.AnvilEventInventory;
 import de.psyCraft.Core.util.inventory.BaseInventory;
 import de.psyCraft.Core.util.inventory.EventInventory;
@@ -25,9 +22,8 @@ public final class psyCraftCore extends JavaPlugin {
 	
 	private static Logger logger;
 	
-	public enum LogLevel {
-		INFO,
-		WARNING
+	public static PsyCraftCore getInstance() {
+		return instance;
 	}
 	
 	public static MultiverseCore getMultiverseCore() {
@@ -74,9 +70,9 @@ public final class psyCraftCore extends JavaPlugin {
 	}
 	
 	private void registerListeners(PluginManager manager) {
-		manager.registerEvents(new LobbyJoinListener(), this);
-		manager.registerEvents(new LobbyClickListener(), this);
-		manager.registerEvents(new LobbyInteractionListener(), this);
+		manager.registerEvents(new HubClickListener(), this);
+		manager.registerEvents(new HubInteractionListener(), this);
+		manager.registerEvents(new HubJoinListener(), this);
 		
 		manager.registerEvents(new BaseInventory.InventoryListener(), this);
 		manager.registerEvents(new EventInventory.ClickListener(), this);

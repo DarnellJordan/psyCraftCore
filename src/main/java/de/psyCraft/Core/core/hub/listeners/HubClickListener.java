@@ -1,4 +1,4 @@
-package de.psyCraft.Core.core.lobby.listeners;
+package de.psyCraft.Core.core.hub.listeners;
 
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class LobbyClickListener implements Listener {
+public class HubClickListener implements Listener {
 	
 	private static Map<Integer, Consumer<Player>> clickEvents = new HashMap<>();
 	

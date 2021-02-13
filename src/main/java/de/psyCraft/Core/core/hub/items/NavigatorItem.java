@@ -1,27 +1,24 @@
-package de.psyCraft.Core.core.lobby.items;
+package de.psyCraft.Core.core.hub.items;
 
 import de.psyCraft.Core.api.game.GameMode;
-import de.psyCraft.Core.api.plugin.registry.GameRegistry;
+import de.psyCraft.Core.api.registry.GameRegistry;
 import de.psyCraft.Core.util.gui.ChestInventoryBuilder;
 import de.psyCraft.Core.util.inventory.EventInventory;
 import de.psyCraft.Core.util.item.ItemBuilder;
-import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class NavigatorItem extends LobbyItem {
+public class NavigatorItem extends HubItem {
 	
 	private final List<EventInventory> pages = new ArrayList<>();
 	
 	public NavigatorItem() {
 		super();
-		System.out.println("GENERATING PAGES");
+		
 		generatePages();
-		System.out.println(pages);
-		Bukkit.broadcastMessage(pages + "");
 	}
 	
 	@Override
@@ -64,7 +61,7 @@ public class NavigatorItem extends LobbyItem {
 				.setHeadURL("http://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e")
 				.build();
 		
-		final List<GameMode> gameModes = new ArrayList<>(GameRegistry.getRegisteredGames());
+		final List<GameMode> gameModes = new ArrayList<>(GameRegistry.getRegisteredGameModes().values());
 		final int iterations = (int) Math.ceil((double) gameModes.size() / 7);
 		
 		for (int i = 0 ; i < iterations ; i++) {
@@ -73,8 +70,8 @@ public class NavigatorItem extends LobbyItem {
 			
 			for (int j = 0 ; j < jIterations ; j++) {
 				final GameMode gameMode = gameModes.remove(0);
-				final ItemBuilder gameItemBuilder = new ItemBuilder(gameMode.getIcon())
-						.setDisplayName("§r" + gameMode.getName());
+				final ItemBuilder gameItemBuilder = new ItemBuilder(gameMode.getItem())
+						.setDisplayName("§r" + gameMode.getDisplayName());
 				
 				for (String line : gameMode.getDescription()) {
 					gameItemBuilder.addLoreLine("§r" + line);
