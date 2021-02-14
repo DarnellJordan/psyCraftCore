@@ -1,6 +1,6 @@
-package de.psyCraft.Core.core.server.events;
+package de.psyCraft.Core.core.server.legacy.events;
 
-import de.psyCraft.Core.core.server.Server;
+import de.psyCraft.Core.core.server.legacy.Server;
 import org.bukkit.World.Environment;
 import org.bukkit.WorldType;
 import org.bukkit.event.Cancellable;

@@ -68,6 +68,7 @@ public final class PsyCraftCore extends JavaPlugin {
 		getCommand("head").setExecutor(new Skull());
 		getCommand("open").setExecutor(new OpenCommand());
 		getCommand("start").setExecutor(new StartCommand());
+		getCommand("reset").setExecutor(new ResetCommand());
 	}
 	
 	private void registerListeners(PluginManager manager) {

@@ -2,7 +2,8 @@ package de.psyCraft.Core.core.hub.items;
 
 import de.psyCraft.Core.api.game.GameMode;
 import de.psyCraft.Core.api.registry.GameRegistry;
-import de.psyCraft.Core.core.server.ServerManager;
+import de.psyCraft.Core.core.server.legacy.Server;
+import de.psyCraft.Core.core.server.legacy.ServerManager;
 import de.psyCraft.Core.util.gui.ChestInventoryBuilder;
 import de.psyCraft.Core.util.inventory.EventInventory;
 import de.psyCraft.Core.util.item.ItemBuilder;
@@ -62,7 +63,7 @@ public class NavigatorItem extends HubItem {
 				.setHeadURL("http://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e")
 				.build();
 		
-		final List<GameMode> gameModes = new ArrayList<>(GameRegistry.getRegisteredGameModes().values());
+		final List<GameMode> gameModes = new ArrayList<>(GameRegistry.getRegisteredGameModes());
 		final int iterations = (int) Math.ceil((double) gameModes.size() / 7);
 		
 		for (int i = 0 ; i < iterations ; i++) {
@@ -82,7 +83,23 @@ public class NavigatorItem extends HubItem {
 				final int slot = slotMap.get(jIterations).get(j);
 				
 				page.addItemWIthClickEvent(slot, gameItem, (event) -> {
-					gameMode.onGameJoin(ServerManager.getServerByID(gameMode), (Player) event.getWhoClicked());
+					final Player player = (Player) event.getWhoClicked();
+//					final GameMode.AccessLevel accessLevel = gameMode.getAccessLevel(player);
+					
+					final Server server = ServerManager.getServerByID(gameMode);
+
+//					switch (accessLevel) {
+//						case FORBIDDEN:
+//							player.sendMessage("Du hast keine Berechtigung dafür");
+//							break;
+//						case LOBBY:
+//							LobbyServer lobbyServer = LobbyServerManager.getLobbyServer(server);
+//							LobbyServerManager.joinLobbyServer(player, lobbyServer);
+//							break;
+//						case SERVER:
+//							server.onPlayerJoin(player);
+//							break;
+//					}
 				});
 			}
 			

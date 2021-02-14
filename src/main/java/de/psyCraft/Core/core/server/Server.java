@@ -1,111 +1,121 @@
 package de.psyCraft.Core.core.server;
 
-import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import de.psyCraft.Core.PsyCraftCore;
 import de.psyCraft.Core.api.game.GameMode;
-import de.psyCraft.Core.core.server.events.ServerWorldCreationEvent;
-import de.psyCraft.Core.util.world.ServerWorldUtil;
-import org.bukkit.World.Environment;
-import org.bukkit.WorldType;
+import de.psyCraft.Core.core.server.legacy.LobbyServer;
+import de.psyCraft.Core.core.server.legacy.events.ServerWorldCreationEvent;
+import org.bukkit.World;
+import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
-public class Server {
+/**
+ * @author psyGamer
+ */
+public abstract class Server {
 	
-	private static final MVWorldManager manager = PsyCraftCore.getMultiverseCore().getMVWorldManager();
+	public final GameMode gameMode;
+	public final int serverID;
 	
-	private final Map<String, MultiverseWorld> worlds = new HashMap<>();
+	protected final Map<Player, World> connectedPlayers = new HashMap();
+	protected final Map<String, MultiverseWorld> worlds = new HashMap();
 	
-	private final GameMode gameMode;
-	private final String worldName;
-	private final int serverID;
-	
-	private ServerStatus status;
-	
-	public Server(GameMode gameMode, int serverID) {
+	protected Server(GameMode gameMode, int serverID) {
 		this.gameMode = gameMode;
 		this.serverID = serverID;
-		
-		worldName = gameMode.getName();
-		status = ServerStatus.OFFLINE;
 	}
 	
-	void start() {
-		if (status != ServerStatus.OFFLINE) {
-			return;
-		}
-		
-		status = ServerStatus.STARTING;
-		
-		System.out.println("load");
-		if (!manager.loadWorld(ServerWorldUtil.getWorldString(worldName, serverID, "main"))) {
-			System.out.println("start");
-			createWorld();
-		}
-		System.out.println("done");
-		
-		worlds.put("main", manager.getMVWorld(ServerWorldUtil.getWorldString(worldName, serverID, "main")));
-		gameMode.onServerEnable(this);
-		
-		status = ServerStatus.ONLINE;
+	/**
+	 * Gets call before creating the {@link org.bukkit.World World} for the {@link Server}. <br />
+	 * Use this to set generation settings.
+	 *
+	 * @param event The {@link ServerWorldCreationEvent} to set generation settings.
+	 * @author psyGamer
+	 * @since 1.0
+	 */
+	public abstract void onServerWorldCreation(ServerWorldCreationEvent event);
+	
+	/**
+	 * Gets call after creating the {@link org.bukkit.World World} for the {@link Server}. <br />
+	 * Use this to initialize the {@link org.bukkit.World World}.
+	 *
+	 * @author psyGamer
+	 * @since 1.0
+	 */
+	public abstract void onServerInitialize();
+	
+	/**
+	 * Gets call after loading the {@link Server}.
+	 *
+	 * @author psyGamer
+	 * @since 1.0
+	 */
+	public abstract void onServerEnable();
+	
+	/**
+	 * Gets call before unloading the {@link Server}.
+	 *
+	 * @author psyGamer
+	 * @since 1.0
+	 */
+	public abstract void onServerDisable();
+	
+	/**
+	 * Gets called when a {@link Player} directly joins the server from the hub.
+	 *
+	 * @param player The {@link Player} that tries to connect.
+	 */
+	public abstract void onServerJoin(Player player);
+	
+	/**
+	 * Gets called when one or more players get moved from a LobbyServer to a Server.
+	 *
+	 * @param players A {@link List} of {@link Player Players} which will be moved to the server.
+	 * @deprecated
+	 */
+	@Deprecated
+	public abstract void onServerJoinFromLobby(List<Player> players);
+	
+	/**
+	 * Gets called when a {@link Player} disconnects from a {@link de.psyCraft.Core.core.server.legacy.Server}.
+	 *
+	 * @param player The {@link Player} which disconnects
+	 */
+	public abstract void onServerLeave(Player player);
+	
+	/**
+	 * Should return the {@link AccessLevel AccessLevel} specific to that {@link Player}.
+	 *
+	 * @param player The {@link Player} of which the {@link AccessLevel AccessLevel} is being requested,
+	 * @return {@link AccessLevel AccessLevel} of {@link Player}.
+	 * @author psyGamer
+	 * @since 1.0
+	 */
+	public abstract AccessLevel getAccessLevel(Player player);
+	
+	/**
+	 * Gets called when a {@link Player} joins a {@link LobbyServer}.
+	 *
+	 * @param server The {@link LobbyServer} the player tries to connect to.
+	 * @param player The {@link Player} that tries to connect.
+	 * @deprecated
+	 */
+	@Deprecated
+	public void onLobbyServerJoin(LobbyServer server, Player player) {
+	
 	}
 	
-	public void shutdown() {
-		if (status == ServerStatus.OFFLINE) {
-			return;
-		}
-		
-		status = ServerStatus.STOPPING;
-		
-		gameMode.onServerDisable(this);
-		manager.unloadWorld(worldName);
-		
-		status = ServerStatus.OFFLINE;
-	}
+	/**
+	 * Gets called when a {@link Player} disconnects from a {@link LobbyServer}.
+	 *
+	 * @param server The {@link LobbyServer}, which the player is disconnecting from.
+	 * @param player The {@link Player} which disconnects
+	 * @deprecated
+	 */
+	@Deprecated
+	public void onLobbyServerLeave(LobbyServer server, Player player) {
 	
-	public void createWorld() {
-		createWorld("main");
-	}
-	
-	public void createWorld(String suffix) {
-		if (!(suffix.isEmpty() || ServerWorldUtil.isWorldNameValid(suffix)) || manager.getMVWorld(worldName) != null) {
-			System.out.println(!ServerWorldUtil.isWorldNameValid(suffix));
-			System.out.println(manager.getMVWorld(worldName) != null);
-			return;
-		}
-		
-		ServerWorldCreationEvent event = new ServerWorldCreationEvent(
-				this,
-				ServerWorldUtil.getWorldString(worldName, serverID, suffix)
-		);
-		
-		gameMode.onServerWorldCreation(event);
-		
-		String name = event.getWorldName();
-		Environment environment = event.getEnvironment();
-		String seed = event.getSeed();
-		String generator = event.getGenerator();
-		WorldType type = event.getType();
-		
-		boolean generateStructures = event.isGeneratingStructures();
-		
-		manager.addWorld(name, environment, seed, type, generateStructures, generator);
-		worlds.put(suffix, manager.getMVWorld(name));
-		
-		gameMode.onServerInitialize(this);
-	}
-	
-	public GameMode getGameMode() {
-		return gameMode;
-	}
-	
-	public Map<String, MultiverseWorld> getWorlds() {
-		return new HashMap<String, MultiverseWorld>(worlds);
-	}
-	
-	public int getServerID() {
-		return serverID;
 	}
 }

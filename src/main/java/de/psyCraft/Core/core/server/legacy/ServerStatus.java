@@ -1,4 +1,4 @@
-package de.psyCraft.Core.core.server;
+package de.psyCraft.Core.core.server.legacy;
 
 public enum ServerStatus {
 	OFFLINE,
