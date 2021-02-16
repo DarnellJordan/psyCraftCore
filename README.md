@@ -1,10 +1,13 @@
 # psyCraftCore
 
 The Core of the psyCraft Network.
+
 ## Compiling
+
 ### Adding the `Multiverse-Core` dependency
 
-To be able to compile the project you need to download [Multiverse-Core v4.2.2]("https://dev.bukkit.org/projects/multiverse-core/files/3074594/download") and put it into `src/main/lib`.
+To be able to compile the project you need to
+download [Multiverse-Core v4.2.2](https://dev.bukkit.org/projects/multiverse-core/files/3074594/download) and put it into `src/main/lib`.
 
 If you want to place it somewhere else, you need to changeg the location in the `pom.xml`.
 
