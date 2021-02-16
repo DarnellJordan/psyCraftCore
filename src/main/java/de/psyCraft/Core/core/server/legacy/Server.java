@@ -3,7 +3,7 @@ package de.psyCraft.Core.core.server.legacy;
 import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
 import de.psyCraft.Core.PsyCraftCore;
-import de.psyCraft.Core.api.game.GameMode;
+import de.psyCraft.Core.api.game.NavigatorItem;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -20,17 +20,17 @@ public class Server {
 	
 	private final LobbyServer lobbyServer = new LobbyServer(this);
 	
-	private final GameMode gameMode;
-	private final String worldName;
+	private final NavigatorItem navigatorItem;
+	private final String worldName = "";
 	private final int serverID;
 	
 	private ServerStatus status;
 	
-	public Server(GameMode gameMode, int serverID) {
-		this.gameMode = gameMode;
+	public Server(NavigatorItem navigatorItem, int serverID) {
+		this.navigatorItem = navigatorItem;
 		this.serverID = serverID;
-		
-		worldName = gameMode.getName();
+
+//		worldName = navigatorItem.getName();
 		status = ServerStatus.OFFLINE;
 		
 		LobbyServerManager.createLobbyServer(this);
@@ -101,8 +101,8 @@ public class Server {
 //		gameMode.onServerEnable(this);
 //
 		status = ServerStatus.ONLINE;
-		
-		PsyCraftCore.logger().info("Server: " + gameMode.getName() + ":" + serverID + "successfully started");
+
+//		PsyCraftCore.logger().info("Server: " + navigatorItem.getName() + ":" + serverID + "successfully started");
 	}
 	
 	public void shutdown() {
@@ -151,8 +151,8 @@ public class Server {
 //		gameMode.onServerInitialize(this);
 	}
 	
-	public GameMode getGameMode() {
-		return gameMode;
+	public NavigatorItem getGameMode() {
+		return navigatorItem;
 	}
 	
 	public Map<String, MultiverseWorld> getWorlds() {

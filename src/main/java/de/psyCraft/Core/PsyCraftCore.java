@@ -1,8 +1,8 @@
 package de.psyCraft.Core;
 
 import com.onarandombox.MultiverseCore.MultiverseCore;
-import de.psyCraft.Core.api.game.TestGame;
-import de.psyCraft.Core.api.registry.GameRegistry;
+import de.psyCraft.Core.api.game.TestServer;
+import de.psyCraft.Core.api.registry.ServerRegistry;
 import de.psyCraft.Core.core.commands.*;
 import de.psyCraft.Core.core.hub.listeners.HubClickListener;
 import de.psyCraft.Core.core.hub.listeners.HubInteractionListener;
@@ -16,6 +16,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.logging.Logger;
 
 public final class PsyCraftCore extends JavaPlugin {
+	
+	public static final String prefix = "&#0FFA04psyCraft";
+	
 	
 	private static PsyCraftCore instance;
 	private static MultiverseCore multiverseCore;
@@ -42,17 +45,7 @@ public final class PsyCraftCore extends JavaPlugin {
 		
 		logger = getLogger();
 		
-		// didn't want to create unique game modes
-		GameRegistry.registerGame(new TestGame(1));
-		GameRegistry.registerGame(new TestGame(2));
-		GameRegistry.registerGame(new TestGame(3));
-		GameRegistry.registerGame(new TestGame(4));
-		GameRegistry.registerGame(new TestGame(5));
-		GameRegistry.registerGame(new TestGame(6));
-		GameRegistry.registerGame(new TestGame(7));
-		GameRegistry.registerGame(new TestGame(8));
-//		GameRegistry.registerGame(new TestGame(9));
-//		GameRegistry.registerGame(new TestGame(10));
+		ServerRegistry.registerServer(TestServer.class, 0);
 		
 		register();
 	}
@@ -67,8 +60,11 @@ public final class PsyCraftCore extends JavaPlugin {
 		getCommand("remove").setExecutor(new RemoveCommand(this));
 		getCommand("head").setExecutor(new Skull());
 		getCommand("open").setExecutor(new OpenCommand());
-		getCommand("start").setExecutor(new StartCommand());
+		getCommand("server").setExecutor(new ServrCommand());
 		getCommand("reset").setExecutor(new ResetCommand());
+
+//		new ServerCommand();
+		
 	}
 	
 	private void registerListeners(PluginManager manager) {

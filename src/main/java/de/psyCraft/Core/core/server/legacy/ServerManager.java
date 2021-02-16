@@ -1,6 +1,6 @@
 package de.psyCraft.Core.core.server.legacy;
 
-import de.psyCraft.Core.api.game.GameMode;
+import de.psyCraft.Core.api.game.NavigatorItem;
 import org.bukkit.entity.Player;
 
 import java.util.*;
@@ -11,30 +11,30 @@ import java.util.stream.IntStream;
 
 public class ServerManager {
 	
-	private static final Map<GameMode, List<Server>> servers = new HashMap<>();
+	private static final Map<NavigatorItem, List<Server>> servers = new HashMap<>();
 	private static final Map<Player, Server> playerConnections = new HashMap<>();
-	private static final Map<GameMode, Integer> nextIDs = new HashMap<>();
+	private static final Map<NavigatorItem, Integer> nextIDs = new HashMap<>();
 	
-	public static void startServer(GameMode gameMode) {
-		if (!nextIDs.containsKey(gameMode)) {
-			nextIDs.put(gameMode, 0);
+	public static void startServer(NavigatorItem navigatorItem) {
+		if (!nextIDs.containsKey(navigatorItem)) {
+			nextIDs.put(navigatorItem, 0);
 		}
 		
-		Server server = new Server(gameMode, nextIDs.get(gameMode));
-		Future<Integer> nextID = calculateNextID(gameMode);
+		Server server = new Server(navigatorItem, nextIDs.get(navigatorItem));
+		Future<Integer> nextID = calculateNextID(navigatorItem);
 		
 		server.start();
 		
-		if (!servers.containsKey(gameMode)) {
-			servers.put(gameMode, new ArrayList<>());
+		if (!servers.containsKey(navigatorItem)) {
+			servers.put(navigatorItem, new ArrayList<>());
 		}
 		
-		servers.get(gameMode).add(server);
+		servers.get(navigatorItem).add(server);
 		
 		try {
-			nextIDs.put(gameMode, nextID.get());
+			nextIDs.put(navigatorItem, nextID.get());
 		} catch (InterruptedException | ExecutionException e) {
-			nextIDs.put(gameMode, nextIDs.get(gameMode) + 1);
+			nextIDs.put(navigatorItem, nextIDs.get(navigatorItem) + 1);
 		}
 	}
 	
@@ -46,14 +46,14 @@ public class ServerManager {
 		return new HashMap<>(playerConnections);
 	}
 	
-	private static Future<Integer> calculateNextID(GameMode gameMode) {
+	private static Future<Integer> calculateNextID(NavigatorItem navigatorItem) {
 		return CompletableFuture.supplyAsync(() -> {
 			int highestID = 0;
 			
 			final Set<Integer> usedIDs = new HashSet<>();
 			final List<Integer> unusedIDs = new ArrayList<>();
 			
-			for (Server server : servers.get(gameMode)) {
+			for (Server server : servers.get(navigatorItem)) {
 				highestID = Math.max(server.getServerID(), highestID);
 				
 				usedIDs.add(server.getServerID());
@@ -69,13 +69,13 @@ public class ServerManager {
 	/**
 	 * DEBUG ONLY
 	 *
-	 * @param gameMode
+	 * @param navigatorItem
 	 * @return
 	 */
-	public static Server getServerByID(GameMode gameMode) {
+	public static Server getServerByID(NavigatorItem navigatorItem) {
 		System.out.println(servers);
-		for (Server server : servers.get(gameMode)) {
-			if (server.getGameMode().equals(gameMode)) {
+		for (Server server : servers.get(navigatorItem)) {
+			if (server.getGameMode().equals(navigatorItem)) {
 				return server;
 			}
 		}

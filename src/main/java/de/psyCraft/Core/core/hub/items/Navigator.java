@@ -1,26 +1,51 @@
 package de.psyCraft.Core.core.hub.items;
 
-import de.psyCraft.Core.api.game.GameMode;
-import de.psyCraft.Core.api.registry.GameRegistry;
-import de.psyCraft.Core.core.server.legacy.Server;
-import de.psyCraft.Core.core.server.legacy.ServerManager;
+import de.psyCraft.Core.api.game.NavigatorItem;
 import de.psyCraft.Core.util.gui.ChestInventoryBuilder;
 import de.psyCraft.Core.util.inventory.EventInventory;
 import de.psyCraft.Core.util.item.ItemBuilder;
+import de.psyCraft.Core.util.refelct.ReflactionUtil;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.*;
 
-public class NavigatorItem extends HubItem {
+public class Navigator extends HubItem {
 	
+	private static final List<NavigatorItem> navigatorItems = new ArrayList<>();
 	private final List<EventInventory> pages = new ArrayList<>();
 	
-	public NavigatorItem() {
+	public Navigator() {
 		super();
 		
 		generatePages();
+	}
+	
+	public static final ItemStack getItemPreset(NavigatorItem navigatorItem) {
+		return null;
+	}
+	
+	public static final boolean registerNavigatorItem(Class<? extends NavigatorItem> navigatorItemClass, Object... consturctorParameters) {
+		try {
+			NavigatorItem navigatorItem = (NavigatorItem) ReflactionUtil.newInstance(navigatorItemClass, consturctorParameters);
+			
+			registerNavigatorItem(navigatorItem);
+			
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			
+			return false;
+		}
+	}
+	
+	public static final void registerNavigatorItem(NavigatorItem navigatorItem) {
+		navigatorItems.add(navigatorItem);
+	}
+	
+	public static final List<NavigatorItem> getNavigatorItems() {
+		return new ArrayList<>(navigatorItems);
 	}
 	
 	@Override
@@ -63,30 +88,22 @@ public class NavigatorItem extends HubItem {
 				.setHeadURL("http://textures.minecraft.net/texture/682ad1b9cb4dd21259c0d75aa315ff389c3cef752be3949338164bac84a96e")
 				.build();
 		
-		final List<GameMode> gameModes = new ArrayList<>(GameRegistry.getRegisteredGameModes());
-		final int iterations = (int) Math.ceil((double) gameModes.size() / 7);
+		final List<NavigatorItem> items = new ArrayList<>(navigatorItems);
+		final int iterations = (int) Math.ceil((double) navigatorItems.size() / 7);
 		
 		for (int i = 0 ; i < iterations ; i++) {
-			final int jIterations = Math.min(gameModes.size(), 7);
+			final int jIterations = Math.min(navigatorItems.size(), 7);
 			final ChestInventoryBuilder page = new ChestInventoryBuilder(5, "§c§lNavigation §0§l|§8 Wähle einen Modus", "psyCraftCore:Lobby.Navigator." + i);
 			
 			for (int j = 0 ; j < jIterations ; j++) {
-				final GameMode gameMode = gameModes.remove(0);
-				final ItemBuilder gameItemBuilder = new ItemBuilder(gameMode.getItem())
-						.setDisplayName("§r" + gameMode.getDisplayName());
-				
-				for (String line : gameMode.getDescription()) {
-					gameItemBuilder.addLoreLine("§r" + line);
-				}
-				
-				final ItemStack gameItem = gameItemBuilder.build();
+				final ItemStack gameItem = null;//gameItemBuilder.build();
 				final int slot = slotMap.get(jIterations).get(j);
 				
 				page.addItemWIthClickEvent(slot, gameItem, (event) -> {
 					final Player player = (Player) event.getWhoClicked();
 //					final GameMode.AccessLevel accessLevel = gameMode.getAccessLevel(player);
-					
-					final Server server = ServerManager.getServerByID(gameMode);
+
+//					final Server server = ServerManager.getServerByID(navigatorItem);
 
 //					switch (accessLevel) {
 //						case FORBIDDEN:

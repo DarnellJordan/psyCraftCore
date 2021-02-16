@@ -24,9 +24,22 @@ public class ServerRegistry {
 		return new ArrayList<>(servers);
 	}
 	
-	public static List<Server> getServerOfGameMode(GameMode gameMode) {
-		return servers.stream()
-				.filter(server -> server.gameMode.equals(gameMode))
-				.collect(Collectors.toList());
+	public static final Map<String, Class<? extends Server>> getRegisteredServerClasses() {
+		return new HashMap<>(serverClasses);
+	}
+	
+	public static final Class<? extends Server> getServerClass(final String serverName) {
+		for (int i = 0 ; i < serverClasses.size() ; i++) {
+			System.out.println("serverClasses[" + i + "]: " + serverClasses.keySet().toArray(new NavigatorItem[0])[i] + ":" + serverClasses.keySet().toArray(new NavigatorItem[0])[i] + ", " + serverClasses.values().toArray(new Class[0])[i]);
+		}
+		return serverClasses.get(serverName);
+	}
+	
+	public static final Object[] getServerConstuctorArguments(final Class<? extends Server> serverClass) {
+		return serverClassConstructorArguments.get(serverClass);
+	}
+	
+	public static final Class[] getServerConstuctorArgumentTypes(final Class<? extends Server> serverClass) {
+		return serverClassConstructorArgumentTypes.get(serverClass);
 	}
 }

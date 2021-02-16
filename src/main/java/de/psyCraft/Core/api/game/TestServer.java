@@ -2,40 +2,25 @@ package de.psyCraft.Core.api.game;
 
 import de.psyCraft.Core.core.server.AccessLevel;
 import de.psyCraft.Core.core.server.Server;
-import de.psyCraft.Core.core.server.legacy.events.ServerWorldCreationEvent;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-
-import java.util.List;
 
 /**
  * @author psyGamer
  */
 public class TestServer extends Server {
 	
-	public TestServer(GameMode gameMode, int serverID) {
-		super(gameMode, serverID);
+	public TestServer(int gameID, int serverID) {
+		super("game_" + gameID, serverID);
 	}
 	
 	@Override
-	public void onServerWorldCreation(ServerWorldCreationEvent event) {
-		event.setSeed(69420);
-	}
-	
-	@Override
-	public void onServerInitialize() {
-		System.out.println("enable");
-		System.out.println(worlds);
-		System.out.println(worlds.get("main"));
-		System.out.println(worlds.get("main").getCBWorld());
-		System.out.println(worlds.get("main").getCBWorld().getHighestBlockAt(0, 0));
-		
-		worlds.get("main").getCBWorld().getHighestBlockAt(0, 0).setType(Material.GOLD_BLOCK);
+	public Class<? extends NavigatorItem> getNavigatorItem(Player player) {
+		return TestGame.class;
 	}
 	
 	@Override
 	public void onServerEnable() {
-		
 		System.out.println(worlds);
 		
 		worlds
@@ -43,6 +28,11 @@ public class TestServer extends Server {
 				.getCBWorld()
 				.getHighestBlockAt(serverID, 0)
 				.setType(Material.IRON_BLOCK);
+	}
+	
+	@Override
+	protected void onServerDeletion() {
+	
 	}
 	
 	@Override
@@ -94,13 +84,6 @@ public class TestServer extends Server {
 		System.out.println(this);
 		System.out.println(worlds);
 		player.teleport(worlds.get("main").getSpawnLocation());
-	}
-	
-	@Override
-	public void onServerJoinFromLobby(List<Player> players) {
-		for (Player player : players) {
-			player.sendMessage("Hello theres");
-		}
 	}
 	
 	@Override

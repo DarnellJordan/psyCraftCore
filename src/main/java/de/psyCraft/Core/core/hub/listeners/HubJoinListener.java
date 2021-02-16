@@ -11,7 +11,7 @@ import org.bukkit.event.player.PlayerTeleportEvent;
 public class HubJoinListener implements Listener {
 	
 	private static void givePlayerItems(final Player player, final Location location) {
-		if (!location.getWorld().getName().equalsIgnoreCase(HubManager.WORLD.getName())) {
+		if (!location.getWorld().getName().equalsIgnoreCase(HubManager.HUB_WORLD.getName())) {
 			return;
 		}
 		

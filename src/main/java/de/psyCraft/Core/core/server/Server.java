@@ -1,14 +1,15 @@
 package de.psyCraft.Core.core.server;
 
+import com.onarandombox.MultiverseCore.api.MVWorldManager;
 import com.onarandombox.MultiverseCore.api.MultiverseWorld;
-import de.psyCraft.Core.api.game.GameMode;
-import de.psyCraft.Core.core.server.legacy.LobbyServer;
-import de.psyCraft.Core.core.server.legacy.events.ServerWorldCreationEvent;
+import de.psyCraft.Core.PsyCraftCore;
+import de.psyCraft.Core.api.game.NavigatorItem;
+import de.psyCraft.Core.core.hub.HubManager;
 import org.bukkit.World;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,35 +17,27 @@ import java.util.Map;
  */
 public abstract class Server {
 	
-	public final GameMode gameMode;
+	static final MVWorldManager manager = PsyCraftCore.getMultiverseCore().getMVWorldManager();
+	
+	public final String serverName;
 	public final int serverID;
 	
 	protected final Map<Player, World> connectedPlayers = new HashMap();
 	protected final Map<String, MultiverseWorld> worlds = new HashMap();
 	
-	protected Server(GameMode gameMode, int serverID) {
-		this.gameMode = gameMode;
+	protected Server(final String serverName, final int serverID) {
+		this.serverName = serverName;
 		this.serverID = serverID;
 	}
 	
 	/**
-	 * Gets call before creating the {@link org.bukkit.World World} for the {@link Server}. <br />
-	 * Use this to set generation settings.
+	 * Should return the {@link ItemStack Item} that will be displayed to the {@link Player}
 	 *
-	 * @param event The {@link ServerWorldCreationEvent} to set generation settings.
-	 * @author psyGamer
-	 * @since 1.0
+	 * @param player The player that has the {@link de.psyCraft.Core.core.hub.items.Navigator Navigator} open.
+	 * @return The {@link ItemStack Item} that will be display in the {@link de.psyCraft.Core.core.hub.items.Navigator Navigator}. <br />
+	 * Return {@code null} if it should be hidden.
 	 */
-	public abstract void onServerWorldCreation(ServerWorldCreationEvent event);
-	
-	/**
-	 * Gets call after creating the {@link org.bukkit.World World} for the {@link Server}. <br />
-	 * Use this to initialize the {@link org.bukkit.World World}.
-	 *
-	 * @author psyGamer
-	 * @since 1.0
-	 */
-	public abstract void onServerInitialize();
+	public abstract Class<? extends NavigatorItem> getNavigatorItem(Player player);
 	
 	/**
 	 * Gets call after loading the {@link Server}.
@@ -53,6 +46,14 @@ public abstract class Server {
 	 * @since 1.0
 	 */
 	public abstract void onServerEnable();
+	
+	/**
+	 * Gets call before deleting a {@link Server}
+	 *
+	 * @author psyGamer
+	 * @since 1.0
+	 */
+	protected abstract void onServerDeletion();
 	
 	/**
 	 * Gets call before unloading the {@link Server}.
@@ -68,15 +69,6 @@ public abstract class Server {
 	 * @param player The {@link Player} that tries to connect.
 	 */
 	public abstract void onServerJoin(Player player);
-	
-	/**
-	 * Gets called when one or more players get moved from a LobbyServer to a Server.
-	 *
-	 * @param players A {@link List} of {@link Player Players} which will be moved to the server.
-	 * @deprecated
-	 */
-	@Deprecated
-	public abstract void onServerJoinFromLobby(List<Player> players);
 	
 	/**
 	 * Gets called when a {@link Player} disconnects from a {@link de.psyCraft.Core.core.server.legacy.Server}.
@@ -95,27 +87,44 @@ public abstract class Server {
 	 */
 	public abstract AccessLevel getAccessLevel(Player player);
 	
-	/**
-	 * Gets called when a {@link Player} joins a {@link LobbyServer}.
-	 *
-	 * @param server The {@link LobbyServer} the player tries to connect to.
-	 * @param player The {@link Player} that tries to connect.
-	 * @deprecated
-	 */
-	@Deprecated
-	public void onLobbyServerJoin(LobbyServer server, Player player) {
-	
+	final void startServer() {
+		for (MultiverseWorld mvWorld : worlds.values()) {
+			manager.loadWorld(mvWorld.getName());
+		}
+		
+		onServerEnable();
 	}
 	
-	/**
-	 * Gets called when a {@link Player} disconnects from a {@link LobbyServer}.
-	 *
-	 * @param server The {@link LobbyServer}, which the player is disconnecting from.
-	 * @param player The {@link Player} which disconnects
-	 * @deprecated
-	 */
-	@Deprecated
-	public void onLobbyServerLeave(LobbyServer server, Player player) {
+	final void stopServer() {
+		onServerDisable();
+		
+		for (MultiverseWorld mvWorld : worlds.values()) {
+			World world = mvWorld.getCBWorld();
+			
+			for (Player player : world.getPlayers()) {
+				onServerLeave(player);
+				
+				player.teleport(HubManager.HUB_WORLD.getSpawnLocation());
+			}
+			
+			manager.deleteWorld(mvWorld.getName(), true, true);
+		}
+	}
 	
+	final void deleteServer() {
+		onServerDisable();
+		onServerDeletion();
+		
+		for (MultiverseWorld mvWorld : worlds.values()) {
+			World world = mvWorld.getCBWorld();
+			
+			for (Player player : world.getPlayers()) {
+				onServerLeave(player);
+				
+				player.teleport(HubManager.HUB_WORLD.getSpawnLocation());
+			}
+			
+			manager.deleteWorld(mvWorld.getName(), true, true);
+		}
 	}
 }
